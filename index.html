@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SNU Reality Lab</title>
+  <meta name="description" content="The website of Reality Lab @ SNU. Coming soon!" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Avenir Next", "Inter", "ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "Roboto", "Helvetica", "Arial"],
+          },
+          boxShadow: {
+            glow: "0 0 0 1px rgb(255 255 255 / 0.08), 0 8px 30px rgb(0 0 0 / 0.12)",
+          }
+        }
+      },
+      darkMode: 'class',
+    }
+  </script>
+  <style>
+    /* Smooth scroll */
+    html { scroll-behavior: smooth; }
+    /* Simple fade-in animation */
+    .fade-in { opacity: 0; transform: translateY(8px); animation: fadeIn .6s ease forwards; }
+    @keyframes fadeIn { to { opacity: 1; transform: none; } }
+    /* Masonry-like projects grid */
+    @media (min-width: 768px) {
+      .masonry { column-count: 2; column-gap: 1rem; }
+      .masonry > * { break-inside: avoid; margin-bottom: 1rem; }
+    }
+    @media (min-width: 1280px) {
+      .masonry { column-count: 3; }
+    }
+  </style>
+  <!-- Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-white text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100">
+  <!-- Sticky Navbar -->
+  <header class="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-neutral-100/95 dark:supports-[backdrop-filter]:bg-neutral-950/80 border-b-2 border-black/5 dark:border-white/10">
+    <div class="max-w-6xl mx-auto px-4 py-5 flex items-center gap-4">
+      <a href="#home" class="font-semibold tracking-tight text-xl sm:text-2xl">Reality Lab</a>
+      <nav class="hidden md:flex items-center gap-6 text-sm ml-6">
+        <a href="#team" class="hover:opacity-70 text-base font-medium">Team</a>
+        <a href="#publications" class="hover:opacity-70 text-base font-medium">Publications</a>
+        <a href="#teaching" class="hover:opacity-70 text-base font-medium">Teaching</a>
+      </nav>
+      <div class="ml-auto flex items-center">
+        <a href="https://en.snu.ac.kr" target="_blank" rel="noopener">
+          <img src="snu_ui.png" alt="SNU Logo" class="h-10 w-auto" />
+        </a>
+      </div>
+    </div>
+  </header>
+
+
+  <section id="home" class="max-w-6xl mx-auto px-4 py-16 sm:py-24">
+    <div class="grid md:grid-cols-5 gap-8 items-center">
+      <div class="md:col-span-3 space-y-6 fade-in">
+        <p class="text-neutral-600 dark:text-neutral-300 max-w-prose">The website of Reality Lab @ Seoul National University. Coming soon!</p>
+        <div class="flex flex-wrap gap-3"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact" class="mt-16 border-t border-black/5 dark:border-white/10">
+    <div class="max-w-6xl mx-auto px-4 py-12 grid md:grid-cols-3 gap-8">
+    </div>
+    <div class="flex flex-col items-center justify-center pb-8">
+      <div class="text-lg font-medium text-neutral-600 dark:text-neutral-100 flex items-center gap-2">
+        <span>© <span id="year"></span> Reality Lab.</span>
+        <span id="themeToggle" class="ml-2 cursor-pointer select-none underline hover:text-amber-600 dark:hover:text-amber-400 transition items-center gap-2 h-[1.7em] align-middle">
+          <i data-lucide="moon" class="align-middle"></i>
+          <span class="hidden sm:inline"></span>
+        </span>
+      </div>
+    </div>
+  
+</footer>
+
+  <!-- Behavior / Interactivity -->
+  <script>
+    // Icons
+    lucide.createIcons();
+
+    // Theme toggle + persist
+    const root = document.documentElement;
+    const themeToggle = document.getElementById('themeToggle');
+    const storedTheme = localStorage.getItem('theme');
+    if (storedTheme === 'dark' || (!storedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      root.classList.add('dark');
+    }
+    themeToggle.addEventListener('click', () => {
+      root.classList.toggle('dark');
+      localStorage.setItem('theme', root.classList.contains('dark') ? 'dark' : 'light');
+    });
+
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Render Highlights
+    const newsWrap = document.getElementById('newsWrap');
+    for (const n of DATA.highlights) {
+      const el = document.createElement('article');
+      el.className = 'rounded-2xl border border-black/10 dark:border-white/10 p-4 hover:shadow-glow transition fade-in';
+      el.innerHTML = `<div class="text-xs text-neutral-500">${new Date(n.date).toLocaleDateString()}</div>
+                      <a href="${n.link}" class="font-semibold mt-1 inline-block">${n.title}</a>`;
+      newsWrap.appendChild(el);
+    }
+
+    // Publications
+    const pubList = document.getElementById('pubList');
+    const pubYear = document.getElementById('pubYear');
+    const pubVenue = document.getElementById('pubVenue');
+    const pubSearch = document.getElementById('pubSearch');
+    const pubClear = document.getElementById('pubClear');
+
+    const years = Array.from(new Set(DATA.publications.map(p => p.year))).sort((a,b)=>b-a);
+    years.forEach(y => pubYear.insertAdjacentHTML('beforeend', `<option>${y}</option>`));
+    const venues = Array.from(new Set(DATA.publications.map(p => p.venue))).sort();
+    venues.forEach(v => pubVenue.insertAdjacentHTML('beforeend', `<option>${v}</option>`));
+
+    function renderPubs() {
+      const q = pubSearch.value.toLowerCase();
+      const y = pubYear.value;
+      const v = pubVenue.value;
+      const rows = DATA.publications.filter(p =>
+        (!y || p.year == y) && (!v || p.venue == v) &&
+        (p.title.toLowerCase().includes(q) || p.authors.toLowerCase().includes(q) || p.venue.toLowerCase().includes(q))
+      ).sort((a,b)=>b.year-a.year);
+      pubList.innerHTML = '';
+      if (!rows.length) pubList.innerHTML = '<div class="text-sm text-neutral-500">No results.</div>';
+      rows.forEach(p => {
+        const el = document.createElement('article');
+        el.className = 'rounded-2xl p-4 border border-black/10 dark:border-white/10 hover:shadow-glow transition fade-in';
+        const links = [
+          p.links?.paper && `<a class="underline hover:no-underline" href="${p.links.paper}">paper</a>`,
+          p.links?.code && `<a class="underline hover:no-underline" href="${p.links.code}">code</a>`,
+          p.links?.project && `<a class="underline hover:no-underline" href="${p.links.project}">project</a>`
+        ].filter(Boolean).join(' · ');
+        el.innerHTML = `
+          <div class="text-xs text-neutral-500">${p.venue} • ${p.year}</div>
+          <div class="font-semibold leading-snug mt-1">${p.title}</div>
+          <div class="text-sm text-neutral-600 dark:text-neutral-300">${p.authors}</div>
+          <div class="text-sm mt-1">${links}</div>`;
+        pubList.appendChild(el);
+      });
+    }
+    renderPubs();
+    [pubSearch, pubYear, pubVenue].forEach(x => x.addEventListener('input', renderPubs));
+    pubClear.addEventListener('click', () => { pubSearch.value=''; pubYear.value=''; pubVenue.value=''; renderPubs(); });
+
+    // Projects
+    const projGrid = document.getElementById('projGrid');
+    const chips = document.querySelectorAll('.chip');
+    chips.forEach(ch => {
+      ch.classList.add('rounded-full','px-3','py-1','border','border-black/10','dark:border-white/10');
+      ch.addEventListener('click', ()=>{
+        chips.forEach(c=>c.classList.remove('active'));
+        ch.classList.add('active');
+        renderProjects(ch.dataset.chip);
+      })
+    });
+
+    function renderProjects(filter='all'){
+      projGrid.innerHTML = '';
+      const items = DATA.projects.filter(p => filter==='all' || p.tags.includes(filter));
+      for(const p of items){
+        const card = document.createElement('article');
+        card.className = 'rounded-3xl overflow-hidden border border-black/10 dark:border-white/10 hover:shadow-glow transition bg-white/50 dark:bg-neutral-900/50';
+        card.innerHTML = `
+          <a href="${p.link}" class="block">
+            <img loading="lazy" class="w-full object-cover" style="height: 200px" src="${p.image}" alt="${p.title}">
+            <div class="p-4">
+              <div class="font-semibold">${p.title}</div>
+              <div class="text-sm text-neutral-600 dark:text-neutral-300">${p.desc}</div>
+              <div class="mt-2 text-xs text-neutral-500">${p.tags.map(t=>`#${t}`).join(' ')}</div>
+            </div>
+          </a>`;
+        projGrid.appendChild(card);
+      }
+    }
+    renderProjects('all');
+
+    // Teaching
+    const teachList = document.getElementById('teachList');
+    for(const t of DATA.teaching){
+      const el = document.createElement('article');
+      el.className = 'rounded-2xl border border-black/10 dark:border-white/10 p-4 hover:shadow-glow transition fade-in';
+      el.innerHTML = `
+        <div class="text-xs text-neutral-500">${t.term} • ${t.code}</div>
+        <a class="font-semibold" href="${t.link}">${t.title}</a>
+        <div class="text-sm text-neutral-600 dark:text-neutral-300">${t.blurb}</div>`;
+      teachList.appendChild(el);
+    }
+
+    // Talks timeline
+    const talkList = document.getElementById('talkList');
+    for(const k of DATA.talks){
+      const li = document.createElement('li');
+      li.className = 'mb-6 ml-4';
+      li.innerHTML = `
+        <div class="absolute -left-1.5 mt-1.5 h-3 w-3 rounded-full bg-amber-500"></div>
+        <time class="text-xs text-neutral-500">${new Date(k.date).toLocaleDateString()}</time>
+        <div class="font-semibold">${k.title}</div>
+        <div class="text-sm text-neutral-600 dark:text-neutral-300">${k.where}</div>`;
+      talkList.appendChild(li);
+    }
+
+    // People
+    const peopleGrid = document.getElementById('peopleGrid');
+    for(const p of DATA.people){
+      const card = document.createElement('article');
+      card.className = 'rounded-2xl overflow-hidden border border-black/10 dark:border-white/10 hover:shadow-glow transition';
+      card.innerHTML = `
+        <a href="${p.link}" class="block">
+          <img class="w-full h-48 object-cover" loading="lazy" src="${p.img}" alt="${p.name}">
+          <div class="p-3">
+            <div class="font-semibold">${p.name}</div>
+            <div class="text-sm text-neutral-600 dark:text-neutral-300">${p.role}</div>
+          </div>
+        </a>`;
+      peopleGrid.appendChild(card);
+    }
+  </script>
+</body>
+</html>
