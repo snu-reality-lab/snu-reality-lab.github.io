@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SNU Reality Lab</title>
   <meta name="description" content="The website of Reality Lab @ SNU. Coming soon!" />
+  <meta http-equiv="refresh" content="8;url=https://reality.snu.ac.kr/class/computational-imaging" />
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -36,35 +37,142 @@
     @media (min-width: 1280px) {
       .masonry { column-count: 3; }
     }
+    /* Nav bar: same style as computational-imaging-2026.html (SNU course page) */
+    .site-nav {
+      background-color: #fafafa;
+      border-bottom: 1px solid #b8c4dc;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      width: 100%;
+      padding: 0;
+    }
+    .site-nav .nav-inner {
+      max-width: 72rem;
+      margin: 0 auto;
+      padding: 0 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 3.75rem;
+      gap: 2rem;
+    }
+    .site-nav .nav-inner .nav-logo-wrap {
+      margin-left: auto;
+    }
+    .site-nav .nav-inner ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: nowrap;
+    }
+    .site-nav .nav-inner li { flex: none; }
+    .site-nav .nav-inner a {
+      display: block;
+      padding: 0.35rem 0;
+      text-decoration: none;
+      color: #000000;
+      font-size: 1.1rem;
+      font-weight: 500;
+      font-family: "Avenir", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      transition: opacity 0.15s ease;
+    }
+    .site-nav .nav-inner a:hover,
+    .site-nav .nav-inner a:focus {
+      color: #000000;
+      opacity: 0.75;
+    }
+    .site-nav .nav-inner a.brand,
+    .site-nav .brand {
+      font-size: 1.65rem !important;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+    .site-nav .nav-logo {
+      height: 2.25rem;
+      width: auto;
+    }
+    @media (max-width: 767px) {
+      .site-nav .nav-inner ul { display: none; }
+    }
+    /* Teaching card: light navy border to match nav */
+    #teaching article {
+      border: 1px solid #b8c4dc;
+    }
+    /* Teaching card mobile: image full-width with fixed ratio, text stacked below */
+    #teaching .teaching-card-img {
+      min-height: 0;
+    }
+    #teaching .teaching-card-img img {
+      display: block;
+      object-fit: cover;
+      object-position: center;
+    }
   </style>
   <!-- Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body class="bg-white text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100">
-  <!-- Sticky Navbar -->
-  <header class="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-neutral-100/95 dark:supports-[backdrop-filter]:bg-neutral-950/80 border-b-2 border-black/5 dark:border-white/10">
-    <div class="max-w-6xl mx-auto px-4 py-5 flex items-center gap-4">
-      <a href="#home" class="font-semibold tracking-tight text-xl sm:text-2xl">Reality Lab</a>
-      <nav class="hidden md:flex items-center gap-6 text-sm ml-6">
-        <a href="#team" class="hover:opacity-70 text-base font-medium">Team</a>
-        <a href="#publications" class="hover:opacity-70 text-base font-medium">Publications</a>
-        <a href="#teaching" class="hover:opacity-70 text-base font-medium">Teaching</a>
-      </nav>
-      <div class="ml-auto flex items-center">
-        <a href="https://en.snu.ac.kr" target="_blank" rel="noopener">
-          <img src="snu_ui.png" alt="SNU Logo" class="h-10 w-auto" />
-        </a>
-      </div>
+  <!-- Sticky Navbar (same style as computational-imaging-2026.html) -->
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <a href="#home" class="brand">Reality Lab</a>
+      <ul>
+        <li><a href="#team">Team</a></li>
+        <li><a href="#publications">Publications</a></li>
+        <li><a href="#teaching">Teaching</a></li>
+      </ul>
+      <a href="https://en.snu.ac.kr" target="_blank" rel="noopener" aria-label="Seoul National University" class="nav-logo-wrap">
+        <img src="snu_ui.png" alt="SNU Logo" class="nav-logo" />
+      </a>
     </div>
-  </header>
+  </nav>
 
 
   <section id="home" class="max-w-6xl mx-auto px-4 py-16 sm:py-24">
     <div class="grid md:grid-cols-5 gap-8 items-center">
       <div class="md:col-span-3 space-y-6 fade-in">
-        <p class="text-neutral-600 dark:text-neutral-300 max-w-prose">The website of Reality Lab @ Seoul National University. Coming soon!</p>
-        <div class="flex flex-wrap gap-3"></div>
+        <p class="text-neutral-600 dark:text-neutral-300 max-w-prose">The website of Reality Lab @ Seoul National University. <strong>Coming soon!</strong></p>
+        <p class="text-neutral-600 dark:text-neutral-300 max-w-prose">We're redirecting you to Suyeon's webpage.</p>
+        <!-- <div class="flex flex-wrap gap-3">
+          <a href="https://reality.snu.ac.kr/class/computational-imaging" class="inline-flex items-center gap-2 rounded-2xl px-4 py-2 bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 shadow-glow hover:opacity-90">
+            Go to course page →
+          </a>
+        </div> -->
       </div>
+    </div>
+  </section>
+
+  <section id="teaching" class="max-w-6xl mx-auto px-4 py-12">
+    <h2 class="text-2xl font-bold mb-4">Teaching</h2>
+    <div class="space-y-6">
+      <div class="text-lg font-semibold text-neutral-500 dark:text-neutral-400">2026</div>
+      <article class="rounded-2xl overflow-hidden hover:shadow-glow transition">
+        <a href="https://reality.snu.ac.kr/class/computational-imaging" class="block">
+          <div class="flex flex-col md:flex-row md:items-center md:gap-4">
+            <div class="teaching-card-img w-full md:w-72 flex-shrink-0 aspect-video md:aspect-auto md:h-44">
+              <img src="https://engineering.stanford.edu/sites/default/files/styles/card_1900x950/public/media/image/resize_tfoe_wetzstein_0.jpg.webp?h=e4ba68eb&itok=EkGNOhMk" alt="Computational Imaging course teaser" class="w-full h-full object-cover" loading="lazy" />
+            </div>
+            <div class="teaching-card-text flex flex-col justify-center text-left w-full p-4 md:p-0 md:ml-4">
+            <div class="font-semibold text-lg mb-1">4190.762: Topics in Computer Graphics – Computational Imaging</div>
+            <div class="flex flex-wrap items-center mb-1">
+              <span class="text-sm text-neutral-500 dark:text-neutral-400 mr-3">Spring 2026</span>
+              <span class="text-sm text-neutral-500 dark:text-neutral-400">
+                <a href="https://en.snu.ac.kr" class="hover:underline">Seoul National University</a>
+              </span>
+            </div>
+            <div class="text-sm text-neutral-600 dark:text-neutral-300">
+              Inverse problems, computational cameras, image restoration, ...
+            </div>
+          </div>
+          </div>
+        </a>
+      </article>
     </div>
   </section>
 
@@ -73,7 +181,7 @@
     </div>
     <div class="flex flex-col items-center justify-center pb-8">
       <div class="text-lg font-medium text-neutral-600 dark:text-neutral-100 flex items-center gap-2">
-        <span>© <span id="year"></span> Reality Lab.</span>
+        <span>© <span id="year"></span> SNU Reality Lab.</span>
         <span id="themeToggle" class="ml-2 cursor-pointer select-none underline hover:text-amber-600 dark:hover:text-amber-400 transition items-center gap-2 h-[1.7em] align-middle">
           <i data-lucide="moon" class="align-middle"></i>
           <span class="hidden sm:inline"></span>
@@ -103,9 +211,15 @@
     // Year
     document.getElementById('year').textContent = new Date().getFullYear();
 
+    // Optional redirect after delay (meta refresh also set to 8s)
+    setTimeout(function(){ window.location.href = 'https://choisuyeon.github.io/'; }, 5000);
+
+    // DATA (minimal so other sections don't break if absent)
+    const DATA = window.DATA || { highlights: [], publications: [], projects: [], talks: [], people: [] };
+
     // Render Highlights
     const newsWrap = document.getElementById('newsWrap');
-    for (const n of DATA.highlights) {
+    if (newsWrap && DATA.highlights && DATA.highlights.length) for (const n of DATA.highlights) {
       const el = document.createElement('article');
       el.className = 'rounded-2xl border border-black/10 dark:border-white/10 p-4 hover:shadow-glow transition fade-in';
       el.innerHTML = `<div class="text-xs text-neutral-500">${new Date(n.date).toLocaleDateString()}</div>
@@ -115,21 +229,23 @@
 
     // Publications
     const pubList = document.getElementById('pubList');
+    if (!pubList) DATA.publications = [];
     const pubYear = document.getElementById('pubYear');
     const pubVenue = document.getElementById('pubVenue');
     const pubSearch = document.getElementById('pubSearch');
     const pubClear = document.getElementById('pubClear');
 
-    const years = Array.from(new Set(DATA.publications.map(p => p.year))).sort((a,b)=>b-a);
+    if (pubList) {
+    const years = Array.from(new Set((DATA.publications||[]).map(p => p.year))).sort((a,b)=>b-a);
     years.forEach(y => pubYear.insertAdjacentHTML('beforeend', `<option>${y}</option>`));
-    const venues = Array.from(new Set(DATA.publications.map(p => p.venue))).sort();
+    const venues = Array.from(new Set((DATA.publications||[]).map(p => p.venue))).sort();
     venues.forEach(v => pubVenue.insertAdjacentHTML('beforeend', `<option>${v}</option>`));
 
     function renderPubs() {
       const q = pubSearch.value.toLowerCase();
       const y = pubYear.value;
       const v = pubVenue.value;
-      const rows = DATA.publications.filter(p =>
+      const rows = (DATA.publications||[]).filter(p =>
         (!y || p.year == y) && (!v || p.venue == v) &&
         (p.title.toLowerCase().includes(q) || p.authors.toLowerCase().includes(q) || p.venue.toLowerCase().includes(q))
       ).sort((a,b)=>b.year-a.year);
@@ -152,12 +268,14 @@
       });
     }
     renderPubs();
-    [pubSearch, pubYear, pubVenue].forEach(x => x.addEventListener('input', renderPubs));
-    pubClear.addEventListener('click', () => { pubSearch.value=''; pubYear.value=''; pubVenue.value=''; renderPubs(); });
+    [pubSearch, pubYear, pubVenue].forEach(x => x && x.addEventListener('input', renderPubs));
+    if (pubClear) pubClear.addEventListener('click', () => { pubSearch.value=''; pubYear.value=''; pubVenue.value=''; renderPubs(); });
+    }
 
     // Projects
     const projGrid = document.getElementById('projGrid');
     const chips = document.querySelectorAll('.chip');
+    if (projGrid) DATA.projects = DATA.projects || [];
     chips.forEach(ch => {
       ch.classList.add('rounded-full','px-3','py-1','border','border-black/10','dark:border-white/10');
       ch.addEventListener('click', ()=>{
@@ -168,8 +286,9 @@
     });
 
     function renderProjects(filter='all'){
+      if (!projGrid) return;
       projGrid.innerHTML = '';
-      const items = DATA.projects.filter(p => filter==='all' || p.tags.includes(filter));
+      const items = (DATA.projects||[]).filter(p => filter==='all' || (p.tags&&p.tags.includes(filter)));
       for(const p of items){
         const card = document.createElement('article');
         card.className = 'rounded-3xl overflow-hidden border border-black/10 dark:border-white/10 hover:shadow-glow transition bg-white/50 dark:bg-neutral-900/50';
@@ -187,21 +306,11 @@
     }
     renderProjects('all');
 
-    // Teaching
-    const teachList = document.getElementById('teachList');
-    for(const t of DATA.teaching){
-      const el = document.createElement('article');
-      el.className = 'rounded-2xl border border-black/10 dark:border-white/10 p-4 hover:shadow-glow transition fade-in';
-      el.innerHTML = `
-        <div class="text-xs text-neutral-500">${t.term} • ${t.code}</div>
-        <a class="font-semibold" href="${t.link}">${t.title}</a>
-        <div class="text-sm text-neutral-600 dark:text-neutral-300">${t.blurb}</div>`;
-      teachList.appendChild(el);
-    }
+    // Teaching (rendered statically in HTML; optional DATA.teaching loop skipped if no teachList)
 
     // Talks timeline
     const talkList = document.getElementById('talkList');
-    for(const k of DATA.talks){
+    if (talkList && DATA.talks) for(const k of DATA.talks){
       const li = document.createElement('li');
       li.className = 'mb-6 ml-4';
       li.innerHTML = `
@@ -214,7 +323,7 @@
 
     // People
     const peopleGrid = document.getElementById('peopleGrid');
-    for(const p of DATA.people){
+    if (peopleGrid && DATA.people) for(const p of DATA.people){
       const card = document.createElement('article');
       card.className = 'rounded-2xl overflow-hidden border border-black/10 dark:border-white/10 hover:shadow-glow transition';
       card.innerHTML = `
