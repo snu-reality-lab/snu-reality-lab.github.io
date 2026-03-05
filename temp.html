@@ -1,0 +1,145 @@
+
+  <!-- Hero -->
+  <section id="home" class="max-w-6xl mx-auto px-4 py-16 sm:py-24">
+    <div class="grid md:grid-cols-5 gap-8 items-center">
+      <div class="md:col-span-3 space-y-6 fade-in">
+        <span class="inline-block text-xs uppercase tracking-widest text-neutral-500 dark:text-neutral-400">Scene Representations • Holography • XR</span>
+        <!-- <h1 class="text-4xl sm:text-5xl font-extrabold leading-tight">We build <span class="underline decoration-amber-400 decoration-4 underline-offset-4">world‑model‑aware</span> display & perception systems.</h1> -->
+        <p class="text-neutral-600 dark:text-neutral-300 max-w-prose">A minimal, fast template inspired by modern academic sites with interactive filtering, lazy loading, and a clean aesthetic. Drop in your data below and deploy on GitHub Pages.</p>
+        <div class="flex flex-wrap gap-3">
+          <a href="#publications" class="inline-flex items-center gap-2 rounded-2xl px-4 py-2 bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 shadow-glow"><i data-lucide="book-open"></i> Publications</a>
+          <a href="#projects" class="inline-flex items-center gap-2 rounded-2xl px-4 py-2 border border-black/10 dark:border-white/10"><i data-lucide="rocket"></i> Projects</a>
+          <a href="#contact" class="inline-flex items-center gap-2 rounded-2xl px-4 py-2 border border-black/10 dark:border-white/10"><i data-lucide="mail"></i> Contact</a>
+        </div>
+      </div>
+      <div class="md:col-span-2 fade-in" style="animation-delay:.15s">
+        <div class="rounded-3xl overflow-hidden shadow-glow border border-black/5 dark:border-white/10">
+          <img src="https://images.unsplash.com/photo-1580128637425-3a0c1a6bb2ca?q=80&w=1600&auto=format&fit=crop" alt="hero" class="w-full h-72 object-cover" loading="lazy">
+        </div>
+        <div class="grid grid-cols-3 gap-3 mt-3 text-xs text-neutral-500 dark:text-neutral-400">
+          <div class="rounded-xl border p-2 border-black/10 dark:border-white/10"><div class="font-semibold">Focus</div><div>Neural Optics</div></div>
+          <div class="rounded-xl border p-2 border-black/10 dark:border-white/10"><div class="font-semibold">Venue</div><div>NeurIPS • SIGGRAPH</div></div>
+          <div class="rounded-xl border p-2 border-black/10 dark:border-white/10"><div class="font-semibold">Lab</div><div>Reality Lab @ SNU</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Highlights / News -->
+  <section id="highlights" class="max-w-6xl mx-auto px-4 py-12">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-2xl font-bold">Highlights</h2>
+      <a href="#" class="text-sm text-amber-600 dark:text-amber-400">View all</a>
+    </div>
+    <div id="newsWrap" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+  </section>
+
+  <!-- Publications -->
+  <section id="publications" class="max-w-6xl mx-auto px-4 py-12">
+    <div class="flex flex-wrap items-center gap-3 mb-4">
+      <h2 class="text-2xl font-bold mr-auto">Publications</h2>
+      <input id="pubSearch" type="search" placeholder="Search title/author/venue…" class="w-full sm:w-72 rounded-xl border border-black/10 dark:border-white/10 bg-transparent px-3 py-2 text-sm" />
+      <select id="pubYear" class="rounded-xl border border-black/10 dark:border-white/10 bg-transparent px-3 py-2 text-sm">
+        <option value="">All years</option>
+      </select>
+      <select id="pubVenue" class="rounded-xl border border-black/10 dark:border-white/10 bg-transparent px-3 py-2 text-sm">
+        <option value="">All venues</option>
+      </select>
+      <button id="pubClear" class="rounded-xl border border-black/10 dark:border-white/10 px-3 py-2 text-sm">Reset</button>
+    </div>
+    <div id="pubList" class="space-y-3"></div>
+  </section>
+
+  <!-- Projects (masonry) -->
+  <section id="projects" class="max-w-6xl mx-auto px-4 py-12">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-2xl font-bold">Projects</h2>
+      <div class="flex gap-2 text-sm">
+        <button class="chip active" data-chip="all">All</button>
+        <button class="chip" data-chip="display">Display</button>
+        <button class="chip" data-chip="ml">ML</button>
+        <button class="chip" data-chip="graphics">Graphics</button>
+      </div>
+    </div>
+    <div id="projGrid" class="masonry"></div>
+  </section>
+
+  <!-- Teaching -->
+  <section id="teaching" class="max-w-6xl mx-auto px-4 py-12">
+    <h2 class="text-2xl font-bold mb-4">Teaching</h2>
+    <div id="teachList" class="grid md:grid-cols-2 gap-4"></div>
+  </section>
+
+  <!-- Talks (timeline) -->
+  <section id="talks" class="max-w-6xl mx-auto px-4 py-12">
+    <h2 class="text-2xl font-bold mb-4">Talks</h2>
+    <ol id="talkList" class="relative border-l border-black/10 dark:border-white/10"></ol>
+  </section>
+
+  <!-- People -->
+  <section id="people" class="max-w-6xl mx-auto px-4 py-12">
+    <h2 class="text-2xl font-bold mb-6">People</h2>
+    <div id="peopleGrid" class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+  </section>
+
+  <!-- Contact / Footer -->
+  <footer id="contact" class="mt-16 border-t border-black/5 dark:border-white/10">
+    <div class="max-w-6xl mx-auto px-4 py-12 grid md:grid-cols-3 gap-8">
+      <div>
+        <div class="font-semibold">Reality Lab</div>
+        <p class="text-sm text-neutral-600 dark:text-neutral-300 max-w-prose mt-2">Next‑gen spatial computing interfaces that merge optics, AI, and vision science.</p>
+      </div>
+      <div>
+        <div class="font-semibold mb-2">Links</div>
+        <ul class="space-y-2 text-sm">
+          <li><a class="hover:underline" href="#publications">Publications</a></li>
+          <li><a class="hover:underline" href="#projects">Projects</a></li>
+          <li><a class="hover:underline" href="#teaching">Teaching</a></li>
+          <li><a class="hover:underline" href="#talks">Talks</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="font-semibold mb-2">Contact</div>
+        <ul class="space-y-2 text-sm">
+          <li>suyeon@stanford.edu</li>
+          <li><a href="https://github.com/snu-reality-lab" class="hover:underline">github.com/snu-reality-lab</a></li>
+          <li><a href="https://reality.snu.ac.kr" class="hover:underline">reality.snu.ac.kr</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="text-xs text-neutral-500 dark:text-neutral-400 text-center pb-8">© <span id="year"></span> Reality Lab. Built with a lightweight, no‑build template.</div>
+  </footer>
+
+  <!-- Data (edit these objects to customize your site) -->
+  <script>
+    const DATA = {
+      highlights: [
+        { title: "Synthetic Aperture Waveguide Holography in Nature Photonics", date: "2025-03-26", link: "#" },
+        { title: "SIGGRAPH 2025: Gaussian Wave Splatting for CGH", date: "2025-08-10", link: "#" },
+        { title: "Launching Reality Lab @ SNU (2026)", date: "2026-03-01", link: "#" },
+      ],
+      publications: [
+        { title: "Scene Representation Networks: Continuous 3D-Structure-Aware Neural Scene Representations", authors: "V. Sitzmann, M. Zollhoefer, G. Wetzstein", venue: "NeurIPS", year: 2019, links: { paper: "https://arxiv.org/abs/1906.01618" } },
+        { title: "Implicit Neural Representations with Periodic Activation Functions", authors: "V. Sitzmann*, J. Martel*, A. Bergman, D. Lindell, G. Wetzstein", venue: "NeurIPS", year: 2020, links: { paper: "https://vsitzmann.github.io/siren/" } },
+        { title: "Synthetic Aperture Waveguide Holography", authors: "S. Choi, C. Jang, D. Lanman, G. Wetzstein", venue: "Nature Photonics", year: 2025, links: { paper: "#" } },
+      ],
+      projects: [
+        { title: "World‑Model‑Aware Displays", tags: ["display", "ml"], image: "https://images.unsplash.com/photo-1581091870622-7c1c4b9e8e53?q=80&w=1200&auto=format&fit=crop", desc: "Context‑aware holographic rendering.", link: "#" },
+        { title: "Partially Coherent Neural Holography", tags: ["display"], image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop", desc: "Mutual‑intensity training for CGH.", link: "#" },
+        { title: "Optical Foundation Models", tags: ["ml", "graphics"], image: "https://images.unsplash.com/photo-1517976487492-576ea6b2936b?q=80&w=1200&auto=format&fit=crop", desc: "Large‑scale pretraining for optics.", link: "#" },
+      ],
+      teaching: [
+        { code: "CSE XXX", term: "Spring 2026", title: "Neural Holography & Displays", link: "#", blurb: "Graduate course on computational displays and perception." },
+        { code: "CSE YYY", term: "Fall 2026", title: "Advances in Computer Vision", link: "#", blurb: "Modern representation learning and 3D vision." },
+      ],
+      talks: [
+        { date: "2025-10-29", where: "FiO 2025", title: "Ultra‑compact Mixed Reality Displays", link: "#" },
+        { date: "2025-08-13", where: "SIGGRAPH 2025", title: "Gaussian Wave Splatting for CGH", link: "#" },
+      ],
+      people: [
+        { name: "Suyeon Choi", role: "PI", img: "https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?q=80&w=800&auto=format&fit=crop", link: "#" },
+        { name: "Researcher A", role: "PhD Student", img: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=800&auto=format&fit=crop", link: "#" },
+        { name: "Researcher B", role: "Postdoc", img: "https://images.unsplash.com/photo-1511367461989-f85a21fda167?q=80&w=800&auto=format&fit=crop", link: "#" },
+      ],
+    }
+  </script>
