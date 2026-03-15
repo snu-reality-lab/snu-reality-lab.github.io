@@ -95,7 +95,7 @@
     }
     .site-nav .nav-inner a.brand,
     .site-nav .brand {
-      font-size: 1.65rem !important;
+      font-size: 0.8rem !important;
       font-weight: 700;
       color: #000000;
       letter-spacing: -0.02em;
@@ -104,6 +104,20 @@
     .site-nav .nav-logo {
       height: 2.25rem;
       width: auto;
+    }
+    .site-nav .nav-brand-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .site-nav .nav-lab-logo {
+      transform-origin: center;
+      flex-shrink: 0;
+    }
+    .site-nav .nav-lab-logo-img {
+      width: 3rem;
+      height: auto;
+      display: block;
     }
     @media (max-width: 767px) {
       .site-nav .nav-inner ul { display: none; }
@@ -121,6 +135,39 @@
       object-fit: cover;
       object-position: center;
     }
+    /* Teaching mode: hide home and footer; only teaching content remains; no ghost when collapsing */
+    #home {
+      max-height: 600px;
+      transition: max-height 0.45s ease, padding 0.4s ease, margin 0.4s ease;
+      overflow: hidden;
+    }
+    footer#contact {
+      max-height: 400px;
+      transition: max-height 0.45s ease, padding 0.4s ease, margin 0.4s ease;
+      overflow: hidden;
+    }
+    body.teaching-mode #home,
+    body.teaching-mode footer#contact {
+      opacity: 0;
+      visibility: hidden;
+      max-height: 0 !important;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      margin: 0 !important;
+      pointer-events: none;
+      transition: max-height 0.45s ease, padding 0.4s ease, margin 0.4s ease, opacity 0s, visibility 0s;
+    }
+    #teaching {
+      transition: margin 0.4s ease, padding 0.4s ease;
+    }
+    body.teaching-mode #teaching {
+      margin-top: 0 !important;
+      padding-top: 1rem;
+      padding-bottom: 2.5rem;
+    }
+    body.teaching-mode #teaching h2 {
+      display: none;
+    }
   </style>
   <!-- Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -129,7 +176,12 @@
   <!-- Sticky Navbar (same style as computational-imaging-2026.html) -->
   <nav class="site-nav">
     <div class="nav-inner">
-      <a href="#home" class="brand">Reality Lab</a>
+      <div class="nav-brand-group">
+        <a href="#home" class="nav-lab-logo" aria-label="Reality Lab" title="">
+          <img src="logo/black-1x.png" alt="Reality Lab" class="nav-lab-logo-img">
+        </a>
+        <a href="#home" class="brand">SNU <br> REALITY <br> LAB</a>
+      </div>
       <ul>
         <li><a href="#team">Team</a></li>
         <li><a href="#publications">Publications</a></li>
@@ -140,6 +192,125 @@
       </a>
     </div>
   </nav>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var labLogo = document.querySelector('.site-nav .nav-lab-logo');
+      if (!labLogo) return;
+      var discreteAngles = [0, 60, 120, 180, 240, 300];
+      var currentAngle = 0;
+      var hoverRaf = null;
+      var isSettling = false;
+      var degPerSec = 220;
+      function applyAngle(deg) {
+        labLogo.style.transform = 'rotate(' + deg + 'deg)';
+      }
+      function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+      function randomDiscrete() {
+        return discreteAngles[Math.floor(Math.random() * discreteAngles.length)];
+      }
+      function nearestDiscrete(angle) {
+        var n = ((angle % 360) + 360) % 360;
+        var idx = Math.round(n / 60) % 6;
+        return discreteAngles[idx];
+      }
+      function shortestPath(from, toD) {
+        var n = from % 360;
+        if (n < 0) n += 360;
+        var diff = toD - n;
+        if (diff > 180) diff -= 360;
+        if (diff < -180) diff += 360;
+        return from + diff;
+      }
+      function runInitialAnimation() {
+        var duration = 2000;
+        var cycles = 2;
+        var endDeg = randomDiscrete();
+        var totalDeg = cycles * 360 + endDeg;
+        var startTime = performance.now();
+        function tick(now) {
+          var elapsed = now - startTime;
+          var t = Math.min(elapsed / duration, 1);
+          var eased = easeOutCubic(t);
+          currentAngle = totalDeg * eased;
+          applyAngle(currentAngle);
+          if (t < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      }
+      function startHoverSpin() {
+        if (isSettling) return;
+        var lastTime = performance.now();
+        function spin(now) {
+          var dt = (now - lastTime) / 1000;
+          lastTime = now;
+          currentAngle += degPerSec * dt;
+          applyAngle(currentAngle);
+          hoverRaf = requestAnimationFrame(spin);
+        }
+        hoverRaf = requestAnimationFrame(spin);
+      }
+      function stopHoverSpinAndSettle() {
+        if (hoverRaf != null) {
+          cancelAnimationFrame(hoverRaf);
+          hoverRaf = null;
+        }
+        isSettling = true;
+        var startAngle = currentAngle;
+        var targetD = nearestDiscrete(startAngle);
+        var targetAngle = shortestPath(startAngle, targetD);
+        var duration = 400;
+        var startTime = performance.now();
+        function tick(now) {
+          var elapsed = now - startTime;
+          var t = Math.min(elapsed / duration, 1);
+          var eased = easeOutCubic(t);
+          currentAngle = startAngle + (targetAngle - startAngle) * eased;
+          applyAngle(currentAngle);
+          if (t < 1) {
+            requestAnimationFrame(tick);
+          } else {
+            currentAngle = targetAngle;
+            isSettling = false;
+          }
+        }
+        requestAnimationFrame(tick);
+      }
+      labLogo.addEventListener('click', function(e) {
+        e.preventDefault();
+        location.reload();
+      });
+      labLogo.addEventListener('mouseenter', startHoverSpin);
+      labLogo.addEventListener('mouseleave', stopHoverSpinAndSettle);
+      runInitialAnimation();
+    });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var teachingLink = document.querySelector('.site-nav a[href="#teaching"]');
+      var homeLink = document.querySelector('.site-nav a[href="#home"]');
+      if (window.location.hash === '#teaching') {
+        document.body.classList.add('teaching-mode');
+        window.scrollTo(0, 0);
+      }
+      if (teachingLink) {
+        teachingLink.addEventListener('click', function(e) {
+          e.preventDefault();
+          document.body.classList.add('teaching-mode');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+      if (homeLink) {
+        homeLink.addEventListener('click', function(e) {
+          if (document.body.classList.contains('teaching-mode')) {
+            e.preventDefault();
+            document.body.classList.remove('teaching-mode');
+            var home = document.getElementById('home');
+            if (home) home.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      }
+    });
+  </script>
 
 
   <section id="home" class="max-w-6xl mx-auto px-4 py-16 sm:py-24">

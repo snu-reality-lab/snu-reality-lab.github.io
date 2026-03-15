@@ -123,6 +123,17 @@
       width: 80px;
       height: auto;
     }
+    header .lab-logo {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      transform-origin: center;
+    }
+    header .lab-logo .logo-img {
+      width: 80px;
+      height: auto;
+      display: block;
+    }
 
     /*
       Navigation bar styles
@@ -464,7 +475,8 @@
     adequate breathing room.
   */
   @media (max-width: 1120px) {
-    header .logo {
+    header .logo,
+    header .lab-logo {
       display: none;
     }
   }
@@ -530,6 +542,9 @@
 <body>
   <!-- Header with course title and subtitle -->
   <header>
+    <a href="https://reality.snu.ac.kr/" target="_blank" rel="noopener" class="lab-logo" aria-label="Reality Lab">
+      <img src="../../logo/blue-1x.png" alt="Reality Lab logo" class="logo-img">
+    </a>
     <!-- Load the Seoul National University logo directly from the official repository and wrap it in a hyperlink to the university website. -->
     <a href="https://en.snu.ac.kr/" target="_blank">
       <img src="https://upload.wikimedia.org/wikipedia/en/thumb/7/77/Seoul_national_university_emblem.svg/500px-Seoul_national_university_emblem.svg.png" alt="SNU logo" class="logo">
@@ -1017,6 +1032,95 @@
     4190.762: Topics in Computer Graphics - Computational Imaging · Spring&nbsp;2026 · Seoul National University
   </footer>
 
+  <!-- Lab logo: rotate on load, hover = keep spinning, mouseleave = settle at discrete angle -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const labLogo = document.querySelector('header .lab-logo');
+      if (!labLogo) return;
+      const discreteAngles = [0, 60, 120, 180, 240, 300];
+      let currentAngle = 0;
+      let hoverRaf = null;
+      let isSettling = false;
+      const degPerSec = 220;
+      function applyAngle(deg) {
+        labLogo.style.transform = 'rotate(' + deg + 'deg)';
+      }
+      function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+      function randomDiscrete() {
+        return discreteAngles[Math.floor(Math.random() * discreteAngles.length)];
+      }
+      function nearestDiscrete(angle) {
+        let n = ((angle % 360) + 360) % 360;
+        const idx = Math.round(n / 60) % 6;
+        return discreteAngles[idx];
+      }
+      function shortestPath(from, toD) {
+        let n = from % 360;
+        if (n < 0) n += 360;
+        let diff = toD - n;
+        if (diff > 180) diff -= 360;
+        if (diff < -180) diff += 360;
+        return from + diff;
+      }
+      function runInitialAnimation() {
+        const duration = 2000;
+        const cycles = 2;
+        const endDeg = randomDiscrete();
+        const totalDeg = cycles * 360 + endDeg;
+        const startTime = performance.now();
+        function tick(now) {
+          const elapsed = now - startTime;
+          const t = Math.min(elapsed / duration, 1);
+          const eased = easeOutCubic(t);
+          currentAngle = totalDeg * eased;
+          applyAngle(currentAngle);
+          if (t < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      }
+      function startHoverSpin() {
+        if (isSettling) return;
+        let lastTime = performance.now();
+        function spin(now) {
+          const dt = (now - lastTime) / 1000;
+          lastTime = now;
+          currentAngle += degPerSec * dt;
+          applyAngle(currentAngle);
+          hoverRaf = requestAnimationFrame(spin);
+        }
+        hoverRaf = requestAnimationFrame(spin);
+      }
+      function stopHoverSpinAndSettle() {
+        if (hoverRaf != null) {
+          cancelAnimationFrame(hoverRaf);
+          hoverRaf = null;
+        }
+        isSettling = true;
+        const startAngle = currentAngle;
+        const targetD = nearestDiscrete(startAngle);
+        const targetAngle = shortestPath(startAngle, targetD);
+        const duration = 400;
+        const startTime = performance.now();
+        function tick(now) {
+          const elapsed = now - startTime;
+          const t = Math.min(elapsed / duration, 1);
+          const eased = easeOutCubic(t);
+          currentAngle = startAngle + (targetAngle - startAngle) * eased;
+          applyAngle(currentAngle);
+          if (t < 1) {
+            requestAnimationFrame(tick);
+          } else {
+            currentAngle = targetAngle;
+            isSettling = false;
+          }
+        }
+        requestAnimationFrame(tick);
+      }
+      labLogo.addEventListener('mouseenter', startHoverSpin);
+      labLogo.addEventListener('mouseleave', stopHoverSpinAndSettle);
+      runInitialAnimation();
+    });
+  </script>
   <!-- Script to animate navigation bar positioning, font sizes, and scroll offsets -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
