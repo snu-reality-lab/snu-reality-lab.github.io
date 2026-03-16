@@ -135,19 +135,13 @@
       object-fit: cover;
       object-position: center;
     }
-    /* Teaching mode: hide home and footer; only teaching content remains; no ghost when collapsing */
+    /* Teaching mode: hide home only; teaching + footer remain. Smooth collapse and expand. */
     #home {
       max-height: 600px;
-      transition: max-height 0.45s ease, padding 0.4s ease, margin 0.4s ease;
+      transition: opacity 0.45s ease, max-height 0.5s ease, padding 0.4s ease, margin 0.4s ease;
       overflow: hidden;
     }
-    footer#contact {
-      max-height: 400px;
-      transition: max-height 0.45s ease, padding 0.4s ease, margin 0.4s ease;
-      overflow: hidden;
-    }
-    body.teaching-mode #home,
-    body.teaching-mode footer#contact {
+    body.teaching-mode #home {
       opacity: 0;
       visibility: hidden;
       max-height: 0 !important;
@@ -155,7 +149,7 @@
       padding-bottom: 0 !important;
       margin: 0 !important;
       pointer-events: none;
-      transition: max-height 0.45s ease, padding 0.4s ease, margin 0.4s ease, opacity 0s, visibility 0s;
+      transition: opacity 0.2s ease, max-height 0.45s ease, padding 0.4s ease, margin 0.4s ease, visibility 0s;
     }
     #teaching {
       transition: margin 0.4s ease, padding 0.4s ease;
@@ -275,10 +269,6 @@
         }
         requestAnimationFrame(tick);
       }
-      labLogo.addEventListener('click', function(e) {
-        e.preventDefault();
-        location.reload();
-      });
       labLogo.addEventListener('mouseenter', startHoverSpin);
       labLogo.addEventListener('mouseleave', stopHoverSpinAndSettle);
       runInitialAnimation();
@@ -287,7 +277,8 @@
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       var teachingLink = document.querySelector('.site-nav a[href="#teaching"]');
-      var homeLink = document.querySelector('.site-nav a[href="#home"]');
+      var brandLink = document.querySelector('.site-nav a.brand');
+      var navLogo = document.querySelector('.site-nav .nav-lab-logo');
       if (window.location.hash === '#teaching') {
         document.body.classList.add('teaching-mode');
         window.scrollTo(0, 0);
@@ -299,16 +290,16 @@
           window.scrollTo({ top: 0, behavior: 'smooth' });
         });
       }
-      if (homeLink) {
-        homeLink.addEventListener('click', function(e) {
-          if (document.body.classList.contains('teaching-mode')) {
-            e.preventDefault();
-            document.body.classList.remove('teaching-mode');
-            var home = document.getElementById('home');
-            if (home) home.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-        });
+      function goHome(e) {
+        if (document.body.classList.contains('teaching-mode')) {
+          e.preventDefault();
+          document.body.classList.remove('teaching-mode');
+          var home = document.getElementById('home');
+          if (home) home.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
       }
+      if (brandLink) brandLink.addEventListener('click', goHome);
+      if (navLogo) navLogo.addEventListener('click', goHome);
     });
   </script>
 
