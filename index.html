@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SNU Reality Lab</title>
   <meta name="description" content="The website of Reality Lab @ SNU. Coming soon!" />
-  <meta http-equiv="refresh" content="8;url=https://reality.snu.ac.kr/class/computational-imaging" />
+  <!-- <meta http-equiv="refresh" content="8;url=https://reality.snu.ac.kr/class/computational-imaging" /> -->
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-L7781B19XD"></script>
   <script>
@@ -33,7 +33,10 @@
   </script>
   <style>
     /* Smooth scroll */
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+      scrollbar-gutter: stable;
+    }
     /* Simple fade-in animation */
     .fade-in { opacity: 0; transform: translateY(8px); animation: fadeIn .6s ease forwards; }
     @keyframes fadeIn { to { opacity: 1; transform: none; } }
@@ -56,7 +59,7 @@
       padding: 0;
     }
     .site-nav .nav-inner {
-      max-width: 72rem;
+      max-width: 79.2rem;
       margin: 0 auto;
       padding: 0 1rem;
       display: flex;
@@ -67,14 +70,16 @@
     }
     .site-nav .nav-inner .nav-logo-wrap {
       margin-left: auto;
+      flex-shrink: 0;
     }
     .site-nav .nav-inner ul {
       list-style: none;
       margin: 0;
+      margin-left: 0.5rem;
       padding: 0;
       display: flex;
       align-items: center;
-      gap: 1rem;
+      gap: 1.8rem;
       flex-wrap: nowrap;
     }
     .site-nav .nav-inner li { flex: none; }
@@ -102,8 +107,24 @@
       line-height: 1.2;
     }
     .site-nav .nav-logo {
-      height: 2.25rem;
+      height: 3rem;
       width: auto;
+    }
+    .dark .site-nav {
+      background-color: #2a2a2a;
+      border-bottom-color: #3d3d3d;
+    }
+    .dark .site-nav .nav-inner a {
+      color: #e5e7eb;
+    }
+    .dark .site-nav .nav-inner a:hover,
+    .dark .site-nav .nav-inner a:focus {
+      color: #ffffff;
+      opacity: 0.9;
+    }
+    .dark .site-nav .nav-lab-logo-img,
+    .dark .site-nav .nav-logo {
+      filter: grayscale(1) brightness(0) invert(1);
     }
     .site-nav .nav-brand-group {
       display: flex;
@@ -120,11 +141,84 @@
       display: block;
     }
     @media (max-width: 767px) {
-      .site-nav .nav-inner ul { display: none; }
+      .site-nav .nav-inner {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        align-items: center;
+        min-height: auto;
+        gap: 0.45rem;
+        padding-top: 0.4rem;
+        padding-bottom: 0.4rem;
+      }
+      .site-nav .nav-brand-group {
+        min-width: 0;
+      }
+      .site-nav .nav-inner .nav-logo-wrap {
+        display: none;
+      }
+      .site-nav .nav-inner ul {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-auto-rows: minmax(1.35rem, auto);
+        gap: 0.45rem 0.8rem;
+        margin-left: 0;
+        width: 100%;
+        align-content: center;
+      }
+      .site-nav .nav-inner ul::after {
+        content: "";
+        display: block;
+      }
+      .site-nav .nav-inner li {
+        width: 100%;
+      }
+      .site-nav .nav-inner li a {
+        width: 100%;
+        text-align: center;
+        padding: 0.14rem 0.1rem;
+        border: none;
+        border-radius: 0;
+        font-size: 0.9rem;
+        line-height: 1.15;
+      }
+      #bottom-panels .bottom-grid {
+        gap: 2.05rem;
+      }
+      #bottom-panels #teaching {
+        margin-top: 0.5rem;
+      }
+      #home {
+        padding-bottom: 1rem !important;
+      }
+      #bottom-panels {
+        margin-top: -0.06rem;
+      }
+      body.publication-mode #home #publications .pub-card-main {
+        grid-template-columns: 1fr !important;
+        min-height: 0 !important;
+        gap: 0.55rem;
+      }
+      body.publication-mode #home #publications .pub-teaser {
+        width: 100% !important;
+        height: auto !important;
+        aspect-ratio: 16 / 9;
+      }
+      body.publication-mode #home #publications .pub-copy {
+        width: 100%;
+      }
+      body.publication-mode #home #publications .pub-card {
+        padding: 0.65rem 0.65rem 0.525rem 0.65rem !important;
+      }
+      .pub-links .pub-link-button.js-open-bibtex {
+        display: none;
+      }
     }
     /* Teaching card: light navy border to match nav */
     #teaching article {
       border: 1px solid #b8c4dc;
+    }
+    .dark #teaching article {
+      border-color: #4a4a4a;
     }
     /* Teaching card mobile: image full-width with fixed ratio, text stacked below */
     #teaching .teaching-card-img {
@@ -135,11 +229,15 @@
       object-fit: cover;
       object-position: center;
     }
-    /* Teaching mode: hide home only; teaching + footer remain. Smooth collapse and expand. */
+    /* Teaching/Publications modes */
     #home {
-      max-height: 600px;
+      max-height: 2400px;
+      padding-bottom: 2rem;
       transition: opacity 0.45s ease, max-height 0.5s ease, padding 0.4s ease, margin 0.4s ease;
       overflow: hidden;
+    }
+    footer#contact > .max-w-6xl {
+      max-width: 79.2rem !important;
     }
     body.teaching-mode #home {
       opacity: 0;
@@ -149,18 +247,545 @@
       padding-bottom: 0 !important;
       margin: 0 !important;
       pointer-events: none;
-      transition: opacity 0.2s ease, max-height 0.45s ease, padding 0.4s ease, margin 0.4s ease, visibility 0s;
+      transition: none !important;
     }
     #teaching {
-      transition: margin 0.4s ease, padding 0.4s ease;
+      transition: none;
+    }
+    .teaching-year {
+      display: none;
+    }
+    body.teaching-mode #teaching .teaching-year {
+      display: block;
     }
     body.teaching-mode #teaching {
       margin-top: 0 !important;
-      padding-top: 1rem;
-      padding-bottom: 2.5rem;
+      padding-top: 0 !important;
+      padding-bottom: 0.5rem !important;
     }
     body.teaching-mode #teaching h2 {
       display: none;
+    }
+    .home-split {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      align-items: start;
+      transition: grid-template-columns 0.45s ease, gap 0.45s ease;
+    }
+    @media (min-width: 1024px) {
+      .home-split {
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+        gap: 0;
+      }
+      .home-split > .home-intro-panel {
+        padding-right: 1.25rem;
+      }
+      .home-split > #publications {
+        padding-left: 1.25rem;
+      }
+    }
+    .home-intro-panel {
+      transition: opacity 0.35s ease, max-height 0.45s ease, margin 0.4s ease, padding 0.4s ease;
+      overflow: hidden;
+      max-height: 2000px;
+    }
+    .pub-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+    .pub-year {
+      display: none;
+    }
+    body.publication-mode #home #publications .pub-year {
+      display: block;
+    }
+    .pub-card {
+      border: 1px solid #b8c4dc;
+      border-radius: 0.45rem;
+      padding: 0.35rem 0.9rem 0.35rem 0.35rem;
+      background: #fff;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+    .dark .pub-card {
+      background: #2f2f2f;
+      border-color: #4a4a4a;
+    }
+    .pub-card-main {
+      display: grid;
+      grid-template-columns: 140px minmax(0, 1fr);
+      gap: 0.7rem;
+      align-items: stretch;
+      min-height: 101px;
+    }
+    .pub-copy {
+      min-width: 0;
+      overflow-wrap: anywhere;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .pub-teaser {
+      width: 140px;
+      height: 101px;
+      border-radius: 0.35rem;
+      background: #f8fafc;
+      color: #64748b;
+      font-size: 0.72rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
+      overflow: hidden;
+    }
+    .pub-teaser img,
+    .pub-teaser video {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+    .pub-title-long {
+      display: none;
+    }
+    body.publication-mode #home #publications .pub-title-short {
+      display: none;
+    }
+    body.publication-mode #home #publications .pub-title-long {
+      display: inline;
+    }
+    .pub-authors-long {
+      display: none;
+    }
+    body.publication-mode #home #publications .pub-authors-short {
+      display: none;
+    }
+    body.publication-mode #home #publications .pub-authors-long {
+      display: inline;
+    }
+    #publications .pub-authors {
+      font-style: italic;
+    }
+    .teach-description {
+      display: none;
+    }
+    body.teaching-mode #teachingCards .pub-title-short {
+      display: none;
+    }
+    body.teaching-mode #teachingCards .pub-title-long {
+      display: inline;
+    }
+    body.teaching-mode #teachingCards .pub-authors-short {
+      display: none;
+    }
+    body.teaching-mode #teachingCards .pub-authors-long {
+      display: inline;
+    }
+    body.teaching-mode #teachingCards .teach-description {
+      display: block;
+    }
+    body:not(.publication-mode) #home #publications .pub-authors {
+      font-size: 0.8125rem;
+      line-height: 1.35;
+    }
+    body:not(.publication-mode) #home #publications .pub-copy .font-semibold.text-xl {
+      font-size: 1.08rem;
+      line-height: 1.3;
+    }
+    body:not(.publication-mode) #home #publications .pub-copy .text-base.text-neutral-500 {
+      font-size: 0.92rem;
+    }
+    body:not(.teaching-mode) #teachingCards .pub-copy .font-semibold.text-xl {
+      font-size: 1.08rem;
+      line-height: 1.3;
+    }
+    body:not(.teaching-mode) #teachingCards .pub-copy .text-sm.text-neutral-500 {
+      font-size: 0.84rem;
+    }
+    .pub-card:hover {
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.09);
+      transform: translateY(-1px);
+    }
+    #home #publications .pub-card.pub-only {
+      display: none;
+    }
+    body.publication-mode #home #publications .pub-card.pub-only {
+      display: block;
+    }
+    body.publication-mode #home .home-split {
+      grid-template-columns: minmax(0, 0fr) minmax(0, 1fr);
+      gap: 0;
+      transition: none !important;
+    }
+    body.publication-mode #home {
+      padding-top: 0 !important;
+      overflow: visible;
+    }
+    body.publication-mode #home .home-intro-panel {
+      opacity: 0;
+      visibility: hidden;
+      max-height: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      pointer-events: none;
+      transition: none !important;
+    }
+    body.publication-mode #home #publications {
+      grid-column: 2;
+      max-width: 79.2rem;
+      width: 100%;
+      margin: 0 auto;
+      padding-top: 0 !important;
+      padding-left: 0 !important;
+      overflow: visible;
+    }
+    body.publication-mode #home #publications > *:not(.pub-cards) {
+      display: none !important;
+    }
+    body.publication-mode #home #publications .pub-cards {
+      gap: 0.7rem;
+    }
+    body.publication-mode #home #publications .pub-year:first-child {
+      margin-top: 0.75rem;
+    }
+    body.publication-mode #home #publications .pub-year {
+      margin-bottom: 0.75rem !important;
+    }
+    body.publication-mode #home #publications .pub-card {
+      padding: 0.35rem 0.9rem 0.35rem 0.35rem;
+    }
+    body.publication-mode #home #publications .pub-card-main {
+      grid-template-columns: 250px minmax(0, 1fr);
+      gap: 0.7rem;
+      min-height: 181px;
+    }
+    body.publication-mode #home #publications .pub-copy .font-semibold.text-xl {
+      font-size: 1.34rem;
+      line-height: 1.25;
+    }
+    body.publication-mode #home #publications .pub-copy {
+      justify-content: flex-start;
+    }
+    body.publication-mode #home #publications .pub-copy .pub-authors {
+      order: 2;
+    }
+    body.publication-mode #home #publications .pub-copy .pub-venue {
+      order: 3;
+    }
+    body.publication-mode #home #publications .pub-copy .pub-links {
+      order: 4;
+    }
+    body.publication-mode #home #publications .pub-teaser {
+      width: 250px;
+      height: 181px;
+    }
+    .pub-links {
+      display: none;
+      margin-top: 0.5rem;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+    .pub-links .pub-link,
+    .pub-links .pub-link-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #b8c4dc;
+      border-radius: 0.38rem;
+      background: #f8fafc;
+      color: #334155;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      line-height: 1;
+      padding: 0.36rem 0.56rem;
+      cursor: pointer;
+      transition: background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease;
+    }
+    .pub-links .pub-link-button {
+      margin: 0;
+      font-family: inherit;
+    }
+    .pub-links .pub-link:hover,
+    .pub-links .pub-link-button:hover {
+      background: #eef2f7;
+      border-color: #94a3b8;
+      color: #0f172a;
+    }
+    body.publication-mode #home #publications .pub-links {
+      display: flex;
+    }
+    .dark .pub-links .pub-link,
+    .dark .pub-links .pub-link-button {
+      border-color: #4a4a4a;
+      background: #2f333c;
+      color: #e2e8f0;
+    }
+    .dark .pub-links .pub-link:hover,
+    .dark .pub-links .pub-link-button:hover {
+      background: #3a3f49;
+      border-color: #64748b;
+      color: #f8fafc;
+    }
+    .bibtex-modal {
+      position: fixed;
+      right: 0;
+      width: min(38vw, 450px);
+      z-index: 1200;
+      display: block;
+      opacity: 0;
+      transform: translateX(102%);
+      pointer-events: none;
+      transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.22s ease;
+    }
+    .bibtex-modal.is-open {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+    }
+    .bibtex-modal.bibtex-modal-ghost {
+      pointer-events: none;
+      z-index: 1199;
+    }
+    .bibtex-dialog {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      background: #ffffff;
+      border: 1px solid #b8c4dc;
+      border-right: none;
+      border-radius: 0.65rem 0 0 0.65rem;
+      box-shadow: -18px 18px 38px rgba(2, 6, 23, 0.22);
+    }
+    .bibtex-side-controls {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 0.45rem;
+      padding: 0.6rem 0.55rem;
+      border-left: 1px solid #b8c4dc;
+      background: #f8fafc;
+    }
+    .bibtex-content {
+      margin: 0;
+      padding: 0.8rem 0.9rem;
+      font-size: 0.86rem;
+      line-height: 1.45;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #0f172a;
+      overflow: auto;
+    }
+    .bibtex-close,
+    .bibtex-copy {
+      border: 1px solid #b8c4dc;
+      border-radius: 0.4rem;
+      background: #f8fafc;
+      color: #0f172a;
+      font-size: 0.78rem;
+      font-weight: 600;
+      line-height: 1.15;
+      min-width: 74px;
+      text-align: center;
+      padding: 0.4rem 0.3rem;
+      cursor: pointer;
+      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+    .bibtex-close:hover,
+    .bibtex-copy:hover {
+      background: #eef2f7;
+    }
+    .bibtex-copy.is-copied {
+      background: #dbeafe;
+      border-color: #93c5fd;
+      color: #1d4ed8;
+    }
+    body.publication-mode #home #publications .pub-card.bibtex-active-card {
+      transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .dark .bibtex-dialog {
+      background: #22252c;
+      border-color: #4a4a4a;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+    }
+    .dark .bibtex-side-controls {
+      border-left-color: #4a4a4a;
+      background: #2a2e36;
+    }
+    .dark .bibtex-content {
+      color: #e5e7eb;
+    }
+    .dark .bibtex-close {
+      border-color: #4a4a4a;
+      background: #2f333c;
+      color: #e5e7eb;
+    }
+    .dark .bibtex-close:hover {
+      background: #3a3f49;
+    }
+    .dark .bibtex-copy {
+      border-color: #4a4a4a;
+      background: #2f333c;
+      color: #e5e7eb;
+    }
+    .dark .bibtex-copy:hover {
+      background: #3a3f49;
+    }
+    .dark .bibtex-copy.is-copied {
+      background: #0b3b63;
+      border-color: #60a5fa;
+      color: #bfdbfe;
+    }
+    body.publication-mode #teaching {
+      opacity: 0;
+      visibility: hidden;
+      max-height: 0 !important;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      margin: 0 !important;
+      pointer-events: none;
+      overflow: hidden;
+      transition: none;
+    }
+    #teaching article,
+    #home .pub-card,
+    #newsWrap article,
+    #pubList article,
+    #projGrid article,
+    #peopleGrid article {
+      border-radius: 0.45rem !important;
+    }
+    #bottom-panels {
+      max-width: none;
+      margin: 0;
+      padding: 0 0 2rem;
+      margin-top: 0;
+    }
+    #bottom-panels .bottom-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+      align-items: start;
+    }
+    @media (min-width: 1024px) {
+      #bottom-panels .bottom-grid {
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+        gap: 0;
+      }
+      #bottom-panels .bottom-grid > #news {
+        padding-right: 1.25rem;
+      }
+      #bottom-panels .bottom-grid > #teaching {
+        padding-left: 1.25rem;
+      }
+    }
+    #news .news-card {
+      border: none;
+      border-radius: 0.2rem;
+      padding: 0.35rem 0.4rem;
+      background: transparent;
+      transition: background-color 0.18s ease, transform 0.18s ease;
+    }
+    #news .news-card:hover {
+      background: #f3f8ff;
+      transform: translateX(2px);
+    }
+    .dark #news .news-card:hover {
+      background: #2f3b47;
+    }
+    body.teaching-mode #bottom-panels .bottom-grid {
+      grid-template-columns: 1fr;
+      transition: none !important;
+    }
+    body.teaching-mode #news {
+      display: none;
+    }
+    body.teaching-mode #teaching {
+      padding-left: 0 !important;
+    }
+    body.publication-mode #bottom-panels {
+      opacity: 0;
+      visibility: hidden;
+      max-height: 0 !important;
+      margin: 0 !important;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      pointer-events: none;
+      overflow: hidden;
+      transition: none;
+    }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+    .section-header h2 {
+      margin-bottom: 0;
+    }
+    .expand-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.12rem;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #64748b;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: color 0.15s ease, opacity 0.15s ease;
+      font-family: inherit;
+    }
+    .expand-btn:hover {
+      color: #334155;
+    }
+    .dark .expand-btn {
+      color: #94a3b8;
+    }
+    .dark .expand-btn:hover {
+      color: #e2e8f0;
+    }
+    .expand-btn i,
+    .expand-btn svg {
+      width: 1.35em;
+      height: 1.35em;
+    }
+    body.teaching-mode .expand-btn-teaching,
+    body.publication-mode .expand-btn-publications {
+      display: none;
+    }
+    #main-body {
+      max-width: 79.2rem;
+      margin: 0 auto;
+      padding: 0 1rem;
+      position: relative;
+    }
+    @keyframes verticalLineFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @media (min-width: 1024px) {
+      body:not(.teaching-mode):not(.publication-mode) #main-body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: calc(1rem + (100% - 2rem) * 0.525);
+        width: 1px;
+        background: #b8c4dc;
+        pointer-events: none;
+        opacity: 0;
+        animation: verticalLineFadeIn 0.5s ease 0.45s forwards;
+      }
+      .dark body:not(.teaching-mode):not(.publication-mode) #main-body::before {
+        background: #4a4a4a;
+      }
     }
   </style>
   <!-- Icons -->
@@ -274,80 +899,697 @@
       runInitialAnimation();
     });
   </script>
+  <script src="data/publications.js"></script>
+  <script src="data/news.js"></script>
+  <script src="data/teaching.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      var teamLink = document.querySelector('.site-nav a[href="#team"]');
       var teachingLink = document.querySelector('.site-nav a[href="#teaching"]');
+      var newsLink = document.querySelector('.site-nav a[href="#news"]');
+      var publicationLink = document.querySelector('.site-nav a[href="#publications"]');
       var brandLink = document.querySelector('.site-nav a.brand');
       var navLogo = document.querySelector('.site-nav .nav-lab-logo');
+      var body = document.body;
+      var publicationCardsRoot = document.getElementById('publicationCards');
+      var newsCardsRoot = document.getElementById('newsCards');
+      var teachingCardsRoot = document.getElementById('teachingCards');
+      var bibtexModal = document.getElementById('bibtexModal');
+      var bibtexContent = document.getElementById('bibtexContent');
+      var bibtexCopyBtn = document.getElementById('bibtexCopyBtn');
+      var bibtexCloseBtn = document.getElementById('bibtexCloseBtn');
+      var bibtexByPubId = {};
+      var activeBibtexCard = null;
+      var activeBibtexBaseRight = 0;
+
+      function escapeHtml(str) {
+        return String(str || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function createBibtexKey(pub) {
+        var firstAuthor = String(pub.authors || '').split(',')[0] || 'author';
+        var surnameRaw = firstAuthor.trim().split(/\s+/).slice(-1)[0] || 'author';
+        var surname = surnameRaw.toLowerCase().replace(/[^a-z0-9]/g, '') || 'author';
+        var year = String(pub.year || '');
+        var firstWord = String(pub.shortTitle || pub.longTitle || '')
+          .toLowerCase()
+          .replace(/[^a-z0-9\s]/g, '')
+          .trim()
+          .split(/\s+/)[0] || 'paper';
+        return surname + year + firstWord;
+      }
+
+      function generateBibtex(pub) {
+        var key = createBibtexKey(pub);
+        return [
+          '@article{' + key + ',',
+          '  title={' + (pub.longTitle || pub.shortTitle || '') + '},',
+          '  author={' + (pub.authors || '') + '},',
+          '  journal={' + (pub.venue || '') + '},',
+          '  year={' + (pub.year || '') + '}',
+          '}'
+        ].join('\n');
+      }
+
+      function syncBibtexPanelToCard() {
+        if (!bibtexModal || !activeBibtexCard) return;
+        var rect = activeBibtexCard.getBoundingClientRect();
+        var panelTop = Math.max(rect.top, 0);
+        var panelHeight = Math.max(140, Math.min(rect.height, window.innerHeight - panelTop));
+        var panelWidth = bibtexModal.offsetWidth || 480;
+        var desiredCardRight = window.innerWidth - panelWidth - 26;
+        var baseCardRight = activeBibtexBaseRight || rect.right;
+        var squeeze = Math.max(0, baseCardRight - desiredCardRight);
+        bibtexModal.style.top = panelTop + 'px';
+        bibtexModal.style.height = panelHeight + 'px';
+        activeBibtexCard.style.transform = squeeze > 0 ? ('translateX(-' + squeeze + 'px)') : '';
+      }
+
+      function releaseActiveBibtexCard() {
+        if (!activeBibtexCard) return;
+        activeBibtexCard.classList.remove('bibtex-active-card');
+        activeBibtexCard.style.transform = '';
+        activeBibtexCard = null;
+        activeBibtexBaseRight = 0;
+      }
+
+      function spawnOutgoingBibtexGhost() {
+        if (!bibtexModal || !bibtexModal.classList.contains('is-open')) return;
+        var ghost = bibtexModal.cloneNode(true);
+        ghost.removeAttribute('id');
+        ghost.classList.add('bibtex-modal-ghost');
+        var idNodes = ghost.querySelectorAll('[id]');
+        idNodes.forEach(function(node) { node.removeAttribute('id'); });
+        document.body.appendChild(ghost);
+        requestAnimationFrame(function() {
+          ghost.classList.remove('is-open');
+        });
+        setTimeout(function() {
+          if (ghost && ghost.parentNode) ghost.parentNode.removeChild(ghost);
+        }, 360);
+      }
+
+      function openBibtexModal(pubId, title, triggerEl) {
+        if (!bibtexModal || !bibtexContent) return;
+        var bib = bibtexByPubId[pubId];
+        if (!bib) return;
+        var wasOpen = bibtexModal.classList.contains('is-open');
+        var previousPubId = bibtexModal.dataset.pubId || '';
+        if (wasOpen && previousPubId === pubId) {
+          closeBibtexModal();
+          return;
+        }
+        var shouldSwapAnimate = wasOpen;
+        if (shouldSwapAnimate) {
+          spawnOutgoingBibtexGhost();
+          bibtexModal.classList.remove('is-open');
+        }
+        releaseActiveBibtexCard();
+        activeBibtexCard = triggerEl && triggerEl.closest ? triggerEl.closest('.pub-card') : null;
+        if (activeBibtexCard) {
+          activeBibtexCard.classList.add('bibtex-active-card');
+          activeBibtexBaseRight = activeBibtexCard.getBoundingClientRect().right;
+        }
+        bibtexModal.dataset.pubId = pubId;
+        bibtexContent.textContent = bib;
+        if (bibtexCopyBtn) {
+          bibtexCopyBtn.innerHTML = 'Copy to<br>clipboard';
+          bibtexCopyBtn.classList.remove('is-copied');
+        }
+        if (shouldSwapAnimate) {
+          requestAnimationFrame(function() {
+            syncBibtexPanelToCard();
+            bibtexModal.classList.add('is-open');
+            requestAnimationFrame(syncBibtexPanelToCard);
+          });
+        } else {
+          syncBibtexPanelToCard();
+          bibtexModal.classList.add('is-open');
+          requestAnimationFrame(syncBibtexPanelToCard);
+        }
+      }
+
+      function closeBibtexModal() {
+        if (!bibtexModal) return;
+        bibtexModal.classList.remove('is-open');
+        delete bibtexModal.dataset.pubId;
+        releaseActiveBibtexCard();
+      }
+
+      function renderHomePublications() {
+        if (!publicationCardsRoot) return;
+        var rows = Array.isArray(window.HOME_PUBLICATIONS) ? window.HOME_PUBLICATIONS : [];
+        bibtexByPubId = {};
+        publicationCardsRoot.innerHTML = "";
+        var years = [];
+        var byYear = {};
+        rows.forEach(function(pub) {
+          var y = pub.year;
+          if (byYear[y] == null) {
+            years.push(y);
+            byYear[y] = [];
+          }
+          byYear[y].push(pub);
+        });
+        years.sort(function(a, b) { return b - a; });
+        years.forEach(function(year) {
+          var yearEl = document.createElement('div');
+          yearEl.className = 'pub-year text-lg font-semibold text-neutral-500 dark:text-neutral-400 mb-3';
+          yearEl.textContent = year;
+          publicationCardsRoot.appendChild(yearEl);
+          byYear[year].forEach(function(pub, idx) {
+            var card = document.createElement('article');
+            card.className = 'pub-card';
+            card.dataset.pubId = pub.id || ('pub-' + year + '-' + idx);
+            var pubId = card.dataset.pubId;
+            var projectLink = pub.projectLink || pub.teaserLink || '';
+            var arxivLink = pub.arxivLink || '';
+            bibtexByPubId[pubId] = pub.bibtex || generateBibtex(pub);
+            if (pub.homeVisible === false) card.classList.add('pub-only');
+            var teaserContent;
+            if (pub.teaserImage) {
+              var isVideo = /\.mp4$/i.test(pub.teaserImage);
+              teaserContent = isVideo
+                ? '<video src="' + pub.teaserImage + '" class="w-full h-full object-cover" autoplay muted loop playsinline></video>'
+                : '<img src="' + pub.teaserImage + '" alt="' + (pub.shortTitle || '') + ' teaser" class="w-full h-full object-cover" loading="lazy" />';
+            } else {
+              teaserContent = 'Teaser';
+            }
+            var teaserInner = pub.teaserLink
+              ? '<a href="' + pub.teaserLink + '" target="_blank" rel="noopener" class="block w-full h-full">' + teaserContent + '</a>'
+              : teaserContent;
+            var linksHtml = '';
+            var projectLabel = (pub.venue === 'Nature' || pub.venue === 'Nature Photonics') ? 'Article' : 'Project Page';
+            if (projectLink) linksHtml += '<a class="pub-link" href="' + escapeHtml(projectLink) + '" target="_blank" rel="noopener">' + projectLabel + '</a> ';
+            if (arxivLink) linksHtml += '<a class="pub-link" href="' + escapeHtml(arxivLink) + '" target="_blank" rel="noopener">Arxiv</a> ';
+            linksHtml += '<button type="button" class="pub-link-button js-open-bibtex" data-pub-id="' + escapeHtml(pubId) + '" data-pub-title="' + escapeHtml(pub.shortTitle || pub.longTitle || 'Publication') + '">BibTeX</button>';
+            card.innerHTML =
+              '<div class="pub-card-main">' +
+                '<div class="pub-teaser">' + teaserInner + '</div>' +
+                '<div class="pub-copy">' +
+                  '<div class="font-semibold text-xl leading-snug">' +
+                    '<span class="pub-title-short">' + pub.shortTitle + '</span>' +
+                    '<span class="pub-title-long">' + pub.longTitle + '</span>' +
+                  '</div>' +
+                  '<div class="pub-venue text-base text-neutral-500 dark:text-neutral-400 mt-1">' + pub.venue + ' ' + pub.year + '</div>' +
+'<div class="pub-authors text-base text-neutral-600 dark:text-neutral-300 mt-1">' +
+                  '<span class="pub-authors-short">' + (pub.shortAuthors || pub.authors || '') + '</span>' +
+                  '<span class="pub-authors-long">' + (pub.authors || pub.shortAuthors || '') + '</span>' +
+                '</div>' +
+                '<div class="pub-links">' + linksHtml + '</div>' +
+                '</div>' +
+              '</div>' +
+              '';
+            publicationCardsRoot.appendChild(card);
+          });
+        });
+      }
+
+      renderHomePublications();
+
+      function renderHomeNews() {
+        if (!newsCardsRoot) return;
+        var rows = Array.isArray(window.HOME_NEWS) ? window.HOME_NEWS : [];
+        newsCardsRoot.innerHTML = "";
+        rows.forEach(function(item, idx) {
+          var card = document.createElement('article');
+          card.className = 'news-card';
+          card.dataset.newsId = item.id || ('news-' + idx);
+          card.innerHTML =
+            '<div class="text-xs text-neutral-500">' + (item.dateLabel || '') + '</div>' +
+            '<div class="font-semibold leading-snug mt-1">' + (item.title || '') + '</div>';
+          newsCardsRoot.appendChild(card);
+        });
+      }
+
+      renderHomeNews();
+
+      function renderTeachingCards() {
+        if (!teachingCardsRoot) return;
+        var rows = Array.isArray(window.HOME_TEACHING) ? window.HOME_TEACHING : [];
+        teachingCardsRoot.innerHTML = "";
+        rows.forEach(function(item, idx) {
+          var card = document.createElement('article');
+          card.className = 'pub-card';
+          card.dataset.teachId = item.id || ('teach-' + idx);
+          card.innerHTML =
+            '<a href="' + (item.link || '#') + '" class="block">' +
+              '<div class="pub-card-main">' +
+                '<div class="pub-teaser">' +
+                  ((item.teaserImage)
+                    ? '<img src="' + item.teaserImage + '" alt="Teaching teaser" class="w-full h-full object-cover" loading="lazy" />'
+                    : 'Teaser') +
+                '</div>' +
+                '<div class="pub-copy">' +
+                  '<div class="font-semibold text-xl leading-snug">' +
+                    (item.courseCode ? item.courseCode + ': ' : '') +
+                    '<span class="pub-title-short">' + (item.shortTitle || '') + '</span>' +
+                    '<span class="pub-title-long">' + (item.longTitle || item.shortTitle || '') + '</span>' +
+                  '</div>' +
+                  '<div class="text-sm text-neutral-500 dark:text-neutral-400 mt-2">' +
+                    '<span class="pub-authors-short">' + (item.shortMeta || '') + '</span>' +
+                    '<span class="pub-authors-long">' + (item.longMeta || item.shortMeta || '') + '</span>' +
+                  '</div>' +
+                  '<div class="teach-description text-sm text-neutral-600 dark:text-neutral-300 mt-2">' + (item.description || '') + '</div>' +
+                '</div>' +
+              '</div>' +
+            '</a>';
+          teachingCardsRoot.appendChild(card);
+        });
+      }
+
+      renderTeachingCards();
+
+      if (publicationCardsRoot) {
+        publicationCardsRoot.addEventListener('click', function(e) {
+          var target = e.target && e.target.closest ? e.target.closest('.js-open-bibtex') : null;
+          if (!target) return;
+          e.preventDefault();
+          openBibtexModal(target.getAttribute('data-pub-id') || '', target.getAttribute('data-pub-title') || '', target);
+        });
+      }
+      if (bibtexCloseBtn) bibtexCloseBtn.addEventListener('click', closeBibtexModal);
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && bibtexModal && bibtexModal.classList.contains('is-open')) {
+          closeBibtexModal();
+        }
+      });
+      window.addEventListener('resize', function() {
+        if (bibtexModal && bibtexModal.classList.contains('is-open')) syncBibtexPanelToCard();
+      });
+      window.addEventListener('scroll', function() {
+        if (bibtexModal && bibtexModal.classList.contains('is-open')) syncBibtexPanelToCard();
+      }, { passive: true });
+      if (bibtexCopyBtn) {
+        bibtexCopyBtn.addEventListener('click', function() {
+          var text = bibtexContent ? bibtexContent.textContent : '';
+          if (!text) return;
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(function() {
+              bibtexCopyBtn.classList.add('is-copied');
+              bibtexCopyBtn.innerHTML = 'Copied to<br>clipboard';
+              setTimeout(function() {
+                bibtexCopyBtn.classList.remove('is-copied');
+                bibtexCopyBtn.innerHTML = 'Copy to<br>clipboard';
+              }, 1400);
+            });
+          } else {
+            bibtexCopyBtn.classList.add('is-copied');
+            bibtexCopyBtn.innerHTML = 'Copied to<br>clipboard';
+            setTimeout(function() {
+              bibtexCopyBtn.classList.remove('is-copied');
+              bibtexCopyBtn.innerHTML = 'Copy to<br>clipboard';
+            }, 1400);
+          }
+        });
+      }
+
+      function animatePublicationCardsLayout(beforeAfterLayoutChange) {
+        var cards = Array.prototype.slice.call(document.querySelectorAll('#publications .pub-card'));
+        if (!cards.length) {
+          beforeAfterLayoutChange();
+          return;
+        }
+        function visibleRect(card) {
+          var rect = card.getBoundingClientRect();
+          if (rect.width <= 0 || rect.height <= 0) return null;
+          return rect;
+        }
+        var firstMap = {};
+        cards.forEach(function(card) {
+          var rect = visibleRect(card);
+          if (rect) firstMap[card.dataset.pubId] = rect;
+        });
+        beforeAfterLayoutChange();
+        requestAnimationFrame(function() {
+          var lastMap = {};
+          cards.forEach(function(card) {
+            var rect = visibleRect(card);
+            if (rect) lastMap[card.dataset.pubId] = rect;
+          });
+          cards.forEach(function(card) {
+            var key = card.dataset.pubId;
+            var f = firstMap[key];
+            var l = lastMap[key];
+            if (!f || !l) {
+              card.style.transition = '';
+              card.style.transform = '';
+              return;
+            }
+            var dx = f.left - l.left;
+            var dy = f.top - l.top;
+            var sx = f.width / Math.max(l.width, 1);
+            var sy = f.height / Math.max(l.height, 1);
+            card.style.transition = 'none';
+            card.style.transformOrigin = 'top left';
+            card.style.transform = 'translate(' + dx + 'px, ' + dy + 'px) scale(' + sx + ', ' + sy + ')';
+          });
+          requestAnimationFrame(function() {
+            cards.forEach(function(card) {
+              card.style.transition = 'transform 520ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s ease';
+              card.style.transform = '';
+            });
+          });
+        });
+      }
+
+      function animateTeachingCardsLayout(beforeAfterLayoutChange, durationMs, timingOptions) {
+        var cards = Array.prototype.slice.call(document.querySelectorAll('#teachingCards .pub-card'));
+        if (!cards.length) {
+          beforeAfterLayoutChange();
+          return;
+        }
+        var duration = typeof durationMs === 'number' ? durationMs : 540;
+        var options = timingOptions && typeof timingOptions === 'object' ? timingOptions : null;
+        var anchorRightEdge = !!(options && options.anchorRightEdge);
+        var moveDuration = options && typeof options.moveDurationMs === 'number' ? options.moveDurationMs : duration;
+        var scaleDuration = options && typeof options.scaleDurationMs === 'number' ? options.scaleDurationMs : duration;
+        var useSplitTiming = options && (moveDuration !== scaleDuration);
+        function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+        function visibleRect(card) {
+          var rect = card.getBoundingClientRect();
+          if (rect.width <= 0 || rect.height <= 0) return null;
+          return rect;
+        }
+        var firstMap = {};
+        cards.forEach(function(card) {
+          var rect = visibleRect(card);
+          if (rect) firstMap[card.dataset.teachId] = rect;
+        });
+        beforeAfterLayoutChange();
+        requestAnimationFrame(function() {
+          var lastMap = {};
+          cards.forEach(function(card) {
+            var rect = visibleRect(card);
+            if (rect) lastMap[card.dataset.teachId] = rect;
+          });
+          cards.forEach(function(card) {
+            var key = card.dataset.teachId;
+            var f = firstMap[key];
+            var l = lastMap[key];
+            if (!f || !l) {
+              card.style.transition = '';
+              card.style.transform = '';
+              return;
+            }
+            var dx = anchorRightEdge ? (f.right - l.right) : (f.left - l.left);
+            var dy = f.top - l.top;
+            var sx = f.width / Math.max(l.width, 1);
+            var sy = f.height / Math.max(l.height, 1);
+            card.style.transition = 'none';
+            card.style.transformOrigin = anchorRightEdge ? 'top right' : 'top left';
+            card.style.transform = 'translate(' + dx + 'px, ' + dy + 'px) scale(' + sx + ', ' + sy + ')';
+          });
+          requestAnimationFrame(function() {
+            if (useSplitTiming) {
+              var startTime = performance.now();
+              var totalDuration = Math.max(moveDuration, scaleDuration);
+              var motion = cards.map(function(card) {
+                var key = card.dataset.teachId;
+                var f = firstMap[key];
+                var l = lastMap[key];
+                if (!f || !l) return null;
+                return {
+                  card: card,
+                  dx: anchorRightEdge ? (f.right - l.right) : (f.left - l.left),
+                  dy: f.top - l.top,
+                  sx: f.width / Math.max(l.width, 1),
+                  sy: f.height / Math.max(l.height, 1)
+                };
+              }).filter(Boolean);
+              function tick(now) {
+                var elapsed = now - startTime;
+                var moveT = Math.min(elapsed / Math.max(moveDuration, 1), 1);
+                var scaleT = Math.min(elapsed / Math.max(scaleDuration, 1), 1);
+                var moveEase = easeOutCubic(moveT);
+                var scaleEase = easeOutCubic(scaleT);
+                motion.forEach(function(item) {
+                  var tx = item.dx * (1 - moveEase);
+                  var ty = item.dy * (1 - moveEase);
+                  var sxNow = 1 + (item.sx - 1) * (1 - scaleEase);
+                  var syNow = 1 + (item.sy - 1) * (1 - scaleEase);
+                  item.card.style.transition = 'none';
+                  item.card.style.transformOrigin = anchorRightEdge ? 'top right' : 'top left';
+                  item.card.style.transform = 'translate(' + tx + 'px, ' + ty + 'px) scale(' + sxNow + ', ' + syNow + ')';
+                });
+                if (elapsed < totalDuration) {
+                  requestAnimationFrame(tick);
+                } else {
+                  motion.forEach(function(item) {
+                    item.card.style.transition = 'box-shadow 0.2s ease';
+                    item.card.style.transform = '';
+                  });
+                }
+              }
+              requestAnimationFrame(tick);
+              return;
+            }
+            cards.forEach(function(card) {
+              card.style.transition = 'transform ' + duration + 'ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s ease';
+              card.style.transform = '';
+            });
+          });
+        });
+      }
+
+      function fadeInCards(selector, durationMs, delayMs) {
+        var cards = Array.prototype.slice.call(document.querySelectorAll(selector));
+        var duration = typeof durationMs === 'number' ? durationMs : 260;
+        var delay = typeof delayMs === 'number' ? delayMs : 0;
+        cards.forEach(function(card) {
+          card.style.transition = 'none';
+          card.style.opacity = '0';
+        });
+        requestAnimationFrame(function() {
+          cards.forEach(function(card) {
+            card.style.transition = 'opacity ' + duration + 'ms ease ' + delay + 'ms';
+            card.style.opacity = '1';
+          });
+        });
+      }
+
+      function setPublicationMode() {
+        var homeVisibleCards = Array.prototype.slice.call(document.querySelectorAll('#publications .pub-card:not(.pub-only)')).filter(function(card) {
+          var rect = card.getBoundingClientRect();
+          return rect.width > 0 && rect.height > 0;
+        });
+        if (!homeVisibleCards.length || body.classList.contains('teaching-mode')) {
+          body.classList.remove('teaching-mode');
+          body.classList.add('publication-mode');
+          return;
+        }
+        animatePublicationCardsLayout(function() {
+          body.classList.remove('teaching-mode');
+          body.classList.add('publication-mode');
+        });
+      }
+
+      function clearPublicationMode() {
+        if (!body.classList.contains('publication-mode')) return;
+        closeBibtexModal();
+        var pubVisibleCards = Array.prototype.slice.call(document.querySelectorAll('#publications .pub-card')).filter(function(card) {
+          var rect = card.getBoundingClientRect();
+          return rect.width > 0 && rect.height > 0;
+        });
+        if (!pubVisibleCards.length) {
+          body.classList.remove('publication-mode');
+          return;
+        }
+        animatePublicationCardsLayout(function() {
+          body.classList.remove('publication-mode');
+        });
+      }
+
+      function clearTeachingMode() {
+        if (!body.classList.contains('teaching-mode')) return;
+        closeBibtexModal();
+        var teachCards = Array.prototype.slice.call(document.querySelectorAll('#teachingCards .pub-card'));
+        if (!teachCards.length) {
+          body.classList.remove('teaching-mode');
+          fadeInCards('#publicationCards .pub-card, #newsCards .news-card');
+          return;
+        }
+        animateTeachingCardsLayout(function() {
+          body.classList.remove('teaching-mode');
+        }, 810, {
+          moveDurationMs: 810,
+          scaleDurationMs: 130,
+          anchorRightEdge: true
+        });
+        fadeInCards('#publicationCards .pub-card, #newsCards .news-card');
+      }
+
       if (window.location.hash === '#teaching') {
-        document.body.classList.add('teaching-mode');
+        body.classList.remove('publication-mode');
+        body.classList.add('teaching-mode');
+        window.scrollTo(0, 0);
+      } else if (window.location.hash === '#publications') {
+        body.classList.remove('teaching-mode');
+        body.classList.add('publication-mode');
         window.scrollTo(0, 0);
       }
       if (teachingLink) {
         teachingLink.addEventListener('click', function(e) {
           e.preventDefault();
-          document.body.classList.add('teaching-mode');
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          closeBibtexModal();
+          if (body.classList.contains('publication-mode')) {
+            var home = document.getElementById('home');
+            var oldTransition = home ? home.style.transition : '';
+            if (home) home.style.transition = 'none';
+            body.classList.remove('publication-mode');
+            body.classList.add('teaching-mode');
+            window.scrollTo(0, 0);
+            fadeInCards('#teachingCards .pub-card');
+            if (home) {
+              void home.offsetHeight;
+              home.style.transition = oldTransition;
+            }
+            return;
+          }
+          if (!body.classList.contains('teaching-mode')) {
+            animateTeachingCardsLayout(function() {
+              body.classList.add('teaching-mode');
+            }, 540);
+            window.scrollTo(0, 0);
+            return;
+          }
+          body.classList.add('teaching-mode');
+          window.scrollTo(0, 0);
+        });
+      }
+      if (newsLink) {
+        newsLink.addEventListener('click', function(e) {
+          if (body.classList.contains('teaching-mode') || body.classList.contains('publication-mode')) {
+            e.preventDefault();
+            if (body.classList.contains('publication-mode')) {
+              clearPublicationMode();
+            } else {
+              clearTeachingMode();
+            }
+            var news = document.getElementById('news');
+            if (news) requestAnimationFrame(function() { news.scrollIntoView({ behavior: 'auto', block: 'start' }); });
+          }
+        });
+      }
+      if (teamLink) {
+        teamLink.addEventListener('click', function(e) {
+          if (body.classList.contains('teaching-mode') || body.classList.contains('publication-mode')) {
+            e.preventDefault();
+            if (body.classList.contains('publication-mode')) {
+              clearPublicationMode();
+            } else {
+              clearTeachingMode();
+            }
+            requestAnimationFrame(function() { window.scrollTo(0, 0); });
+          }
+        });
+      }
+      if (publicationLink) {
+        publicationLink.addEventListener('click', function(e) {
+          e.preventDefault();
+          closeBibtexModal();
+          if (body.classList.contains('teaching-mode')) {
+            body.classList.remove('teaching-mode');
+            body.classList.add('publication-mode');
+            window.scrollTo(0, 0);
+            fadeInCards('#publicationCards .pub-card');
+            return;
+          }
+          window.scrollTo(0, 0);
+          setPublicationMode();
         });
       }
       function goHome(e) {
-        if (document.body.classList.contains('teaching-mode')) {
+        if (body.classList.contains('teaching-mode') || body.classList.contains('publication-mode')) {
           e.preventDefault();
-          document.body.classList.remove('teaching-mode');
-          var home = document.getElementById('home');
-          if (home) home.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          if (body.classList.contains('publication-mode')) {
+            clearPublicationMode();
+          } else {
+            clearTeachingMode();
+          }
+          requestAnimationFrame(function() { window.scrollTo(0, 0); });
         }
       }
       if (brandLink) brandLink.addEventListener('click', goHome);
       if (navLogo) navLogo.addEventListener('click', goHome);
+
+      var expandPub = document.querySelector('.expand-btn-publications');
+      var expandTeach = document.querySelector('.expand-btn-teaching');
+      if (expandPub && publicationLink) expandPub.addEventListener('click', function(e) { e.preventDefault(); publicationLink.click(); });
+      if (expandTeach && teachingLink) expandTeach.addEventListener('click', function(e) { e.preventDefault(); teachingLink.click(); });
     });
   </script>
 
+  <main id="main-body">
+  <section id="home" class="px-0 pt-7 sm:pt-8 pb-1">
+    <div class="home-split">
+      <div class="home-intro-panel fade-in">
+        <div class="space-y-4">
+          <p class="text-neutral-600 dark:text-neutral-300 max-w-prose">
+            We design next-generation physical interfaces that connect humans, machines, graphics, and AI agents, enabling seamless interactions among them. These have a wide range of applications across spatial computing, scientific imaging, robotics, fabrication, as well as computer graphics and vision.
+          </p>
+        </div>
+        <div class="mt-6 rounded-2xl overflow-hidden border border-black/10 dark:border-white/10">
+          <div class="w-full aspect-[2048/915] bg-neutral-100 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-300 flex items-center justify-center text-center px-4">
+            <div>
+              <div class="mt-2">The website of Reality Lab @ Seoul National University. Coming soon!</div>
+              <div class="mt-2">We're redirecting you to Suyeon's webpage in <span id="redirectCountdown">20</span>s...</div>
+              <div class="mt-2">Placeholder for the group photo or banner</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <section id="publications" class="fade-in">
+        <div class="section-header">
+          <h2 class="text-2xl font-bold">Publications</h2>
+          <button class="expand-btn expand-btn-publications" type="button" aria-label="Expand publications">
+            <i data-lucide="arrow-down-left"></i>
+            <span>Expand</span>
+          </button>
+        </div>
+        <div class="pub-cards" id="publicationCards"></div>
+      </section>
+    </div>
+  </section>
 
-  <section id="home" class="max-w-6xl mx-auto px-4 py-16 sm:py-24">
-    <div class="grid md:grid-cols-5 gap-8 items-center">
-      <div class="md:col-span-3 space-y-6 fade-in">
-        <p class="text-neutral-600 dark:text-neutral-300 max-w-prose">The website of Reality Lab @ Seoul National University. <strong>Coming soon!</strong></p>
-        <p class="text-neutral-600 dark:text-neutral-300 max-w-prose">We're redirecting you to Suyeon's webpage.</p>
-        <!-- <div class="flex flex-wrap gap-3">
-          <a href="https://reality.snu.ac.kr/class/computational-imaging" class="inline-flex items-center gap-2 rounded-2xl px-4 py-2 bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 shadow-glow hover:opacity-90">
-            Go to course page →
-          </a>
-        </div> -->
+  <section id="bottom-panels">
+    <div class="bottom-grid">
+      <section id="news" class="py-0">
+        <h2 class="text-2xl font-bold mb-3">News</h2>
+        <div id="newsCards" class="space-y-3"></div>
+      </section>
+      <section id="teaching" class="py-0">
+        <div class="section-header">
+          <h2 class="text-2xl font-bold">Teaching</h2>
+          <button class="expand-btn expand-btn-teaching" type="button" aria-label="Expand teaching">
+            <i data-lucide="arrow-up-left"></i>
+            <span>Expand</span>
+          </button>
+        </div>
+        <div class="teaching-year text-lg font-semibold text-neutral-500 dark:text-neutral-400 mb-3">2026</div>
+        <div id="teachingCards" class="space-y-3"></div>
+      </section>
+    </div>
+  </section>
+  </main>
+
+  <div id="bibtexModal" class="bibtex-modal" aria-hidden="true">
+    <div class="bibtex-dialog" role="dialog" aria-modal="true" aria-label="BibTeX panel">
+      <pre id="bibtexContent" class="bibtex-content"></pre>
+      <div class="bibtex-side-controls">
+        <button id="bibtexCopyBtn" class="bibtex-copy" type="button">Copy to<br>clipboard</button>
+        <button id="bibtexCloseBtn" class="bibtex-close" type="button" aria-label="Close BibTeX modal">Close</button>
       </div>
     </div>
-  </section>
+  </div>
 
-  <section id="teaching" class="max-w-6xl mx-auto px-4 py-12">
-    <h2 class="text-2xl font-bold mb-4">Teaching</h2>
-    <div class="space-y-6">
-      <div class="text-lg font-semibold text-neutral-500 dark:text-neutral-400">2026</div>
-      <article class="rounded-2xl overflow-hidden hover:shadow-glow transition">
-        <a href="https://reality.snu.ac.kr/class/computational-imaging" class="block">
-          <div class="flex flex-col md:flex-row md:items-center md:gap-4">
-            <div class="teaching-card-img w-full md:w-72 flex-shrink-0 aspect-video md:aspect-auto md:h-44">
-              <img src="https://engineering.stanford.edu/sites/default/files/styles/card_1900x950/public/media/image/resize_tfoe_wetzstein_0.jpg.webp?h=e4ba68eb&itok=EkGNOhMk" alt="Computational Imaging course teaser" class="w-full h-full object-cover" loading="lazy" />
-            </div>
-            <div class="teaching-card-text flex flex-col justify-center text-left w-full p-4 md:p-0 md:ml-4">
-            <div class="font-semibold text-lg mb-1">4190.762: Topics in Computer Graphics – Computational Imaging</div>
-            <div class="flex flex-wrap items-center mb-1">
-              <span class="text-sm text-neutral-500 dark:text-neutral-400 mr-3">Spring 2026</span>
-              <span class="text-sm text-neutral-500 dark:text-neutral-400">
-                <a href="https://en.snu.ac.kr" class="hover:underline">Seoul National University</a>
-              </span>
-            </div>
-            <div class="text-sm text-neutral-600 dark:text-neutral-300">
-              Inverse problems, computational cameras, differentiable optics, ...
-            </div>
-          </div>
-          </div>
-        </a>
-      </article>
-    </div>
-  </section>
-
-  <footer id="contact" class="mt-16 border-t border-black/5 dark:border-white/10">
-    <div class="max-w-6xl mx-auto px-4 py-12 grid md:grid-cols-3 gap-8">
+  <footer id="contact" class="mt-0 border-t border-[#b8c4dc] dark:border-[#3d3d3d]">
+    <div class="max-w-6xl mx-auto px-4 py-5 grid md:grid-cols-3 gap-8">
     </div>
     <div class="flex flex-col items-center justify-center pb-8">
       <div class="text-lg font-medium text-neutral-600 dark:text-neutral-100 flex items-center gap-2">
@@ -381,8 +1623,22 @@
     // Year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Optional redirect after delay (meta refresh also set to 8s)
-    setTimeout(function(){ window.location.href = 'https://choisuyeon.github.io/'; }, 5000);
+    // Redirect countdown
+    const redirectCountdownEl = document.getElementById('redirectCountdown');
+    const redirectTargetUrl = 'https://choisuyeon.github.io/';
+    const redirectDelaySeconds = 20;
+    if (redirectCountdownEl) {
+      let secondsRemaining = redirectDelaySeconds;
+      redirectCountdownEl.textContent = String(secondsRemaining);
+      const countdownTimer = setInterval(function() {
+        secondsRemaining = Math.max(0, secondsRemaining - 1);
+        redirectCountdownEl.textContent = String(secondsRemaining);
+        if (secondsRemaining <= 0) clearInterval(countdownTimer);
+      }, 1000);
+      setTimeout(function() {
+        window.location.href = redirectTargetUrl;
+      }, redirectDelaySeconds * 1000);
+    }
 
     // DATA (minimal so other sections don't break if absent)
     const DATA = window.DATA || { highlights: [], publications: [], projects: [], talks: [], people: [] };
