@@ -385,6 +385,22 @@
     }
     body.teaching-mode #teachingCards .teach-description {
       display: block;
+      order: 2;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+    body.teaching-mode #teachingCards .teach-meta {
+      order: 3;
+      font-size: 0.98rem;
+      line-height: 1.45;
+    }
+    body.teaching-mode #teachingCards .pub-copy .font-semibold.text-xl {
+      font-size: 1.4rem;
+      line-height: 1.28;
+    }
+    body.teaching-mode #teachingCards .pub-copy {
+      padding-top: 0.2rem;
+      padding-bottom: 0.2rem;
     }
     body:not(.publication-mode) #home #publications .pub-authors {
       font-size: 0.8125rem;
@@ -421,6 +437,7 @@
     }
     body.publication-mode #home {
       padding-top: 0 !important;
+      max-height: none !important;
       overflow: visible;
     }
     body.publication-mode #home .home-intro-panel {
@@ -451,7 +468,10 @@
       margin-top: 0.75rem;
     }
     body.publication-mode #home #publications .pub-year {
-      margin-bottom: 0.75rem !important;
+      margin-bottom: 0.35rem !important;
+    }
+    body.publication-mode #home #publications .pub-year:not(:first-child) {
+      margin-top: 1rem !important;
     }
     body.publication-mode #home #publications .pub-card {
       padding: 0.35rem 0.9rem 0.35rem 0.35rem;
@@ -467,6 +487,8 @@
     }
     body.publication-mode #home #publications .pub-copy {
       justify-content: flex-start;
+      padding-top: 0.2rem;
+      padding-bottom: 0.2rem;
     }
     body.publication-mode #home #publications .pub-copy .pub-authors {
       order: 2;
@@ -478,6 +500,14 @@
       order: 4;
     }
     body.publication-mode #home #publications .pub-teaser {
+      width: 250px;
+      height: 181px;
+    }
+    body.teaching-mode #teachingCards .pub-card-main {
+      grid-template-columns: 250px minmax(0, 1fr);
+      min-height: 181px;
+    }
+    body.teaching-mode #teachingCards .pub-teaser {
       width: 250px;
       height: 181px;
     }
@@ -956,6 +986,20 @@
         ].join('\n');
       }
 
+      function formatPublicationVenueLine(pub) {
+        var venue = String(pub.venue || '').trim();
+        var year = pub.year;
+        if (!venue) return year ? String(year) : '';
+        if (!year) return venue;
+        // If year is already in venue text, keep it as-is.
+        if (new RegExp('\\b' + year + '\\b').test(venue)) return venue;
+        // Conferences: show "Venue Year" once.
+        var conferencePattern = /\b(SIGGRAPH|SIGGRAPH Asia|CVPR|ICCV|ECCV|NeurIPS|ICLR|AAAI|UIST|CHI)\b/i;
+        if (conferencePattern.test(venue)) return venue + ' ' + year;
+        // Journals and other venues: show "Venue (Year)".
+        return venue + ' (' + year + ')';
+      }
+
       function syncBibtexPanelToCard() {
         if (!bibtexModal || !activeBibtexCard) return;
         var rect = activeBibtexCard.getBoundingClientRect();
@@ -1096,7 +1140,7 @@
                     '<span class="pub-title-short">' + pub.shortTitle + '</span>' +
                     '<span class="pub-title-long">' + pub.longTitle + '</span>' +
                   '</div>' +
-                  '<div class="pub-venue text-base text-neutral-500 dark:text-neutral-400 mt-1">' + pub.venue + ' ' + pub.year + '</div>' +
+                  '<div class="pub-venue text-base text-neutral-500 dark:text-neutral-400 mt-1">' + formatPublicationVenueLine(pub) + '</div>' +
 '<div class="pub-authors text-base text-neutral-600 dark:text-neutral-300 mt-1">' +
                   '<span class="pub-authors-short">' + (pub.shortAuthors || pub.authors || '') + '</span>' +
                   '<span class="pub-authors-long">' + (pub.authors || pub.shortAuthors || '') + '</span>' +
@@ -1151,7 +1195,7 @@
                     '<span class="pub-title-short">' + (item.shortTitle || '') + '</span>' +
                     '<span class="pub-title-long">' + (item.longTitle || item.shortTitle || '') + '</span>' +
                   '</div>' +
-                  '<div class="text-sm text-neutral-500 dark:text-neutral-400 mt-2">' +
+                  '<div class="teach-meta text-sm text-neutral-500 dark:text-neutral-400 mt-2">' +
                     '<span class="pub-authors-short">' + (item.shortMeta || '') + '</span>' +
                     '<span class="pub-authors-long">' + (item.longMeta || item.shortMeta || '') + '</span>' +
                   '</div>' +
@@ -1424,6 +1468,11 @@
         fadeInCards('#publicationCards .pub-card, #newsCards .news-card');
       }
 
+      function clearHashFromUrl() {
+        if (!window.location.hash || !window.history || !window.history.replaceState) return;
+        window.history.replaceState(null, '', window.location.pathname + window.location.search);
+      }
+
       if (window.location.hash === '#teaching') {
         body.classList.remove('publication-mode');
         body.classList.add('teaching-mode');
@@ -1433,6 +1482,7 @@
         body.classList.add('publication-mode');
         window.scrollTo(0, 0);
       }
+      clearHashFromUrl();
       if (teachingLink) {
         teachingLink.addEventListener('click', function(e) {
           e.preventDefault();
@@ -1445,6 +1495,7 @@
             body.classList.add('teaching-mode');
             window.scrollTo(0, 0);
             fadeInCards('#teachingCards .pub-card');
+            clearHashFromUrl();
             if (home) {
               void home.offsetHeight;
               home.style.transition = oldTransition;
@@ -1456,37 +1507,41 @@
               body.classList.add('teaching-mode');
             }, 540);
             window.scrollTo(0, 0);
+            clearHashFromUrl();
             return;
           }
           body.classList.add('teaching-mode');
           window.scrollTo(0, 0);
+          clearHashFromUrl();
         });
       }
       if (newsLink) {
         newsLink.addEventListener('click', function(e) {
+          e.preventDefault();
           if (body.classList.contains('teaching-mode') || body.classList.contains('publication-mode')) {
-            e.preventDefault();
             if (body.classList.contains('publication-mode')) {
               clearPublicationMode();
             } else {
               clearTeachingMode();
             }
-            var news = document.getElementById('news');
-            if (news) requestAnimationFrame(function() { news.scrollIntoView({ behavior: 'auto', block: 'start' }); });
           }
+          var news = document.getElementById('news');
+          if (news) requestAnimationFrame(function() { news.scrollIntoView({ behavior: 'auto', block: 'start' }); });
+          clearHashFromUrl();
         });
       }
       if (teamLink) {
         teamLink.addEventListener('click', function(e) {
+          e.preventDefault();
           if (body.classList.contains('teaching-mode') || body.classList.contains('publication-mode')) {
-            e.preventDefault();
             if (body.classList.contains('publication-mode')) {
               clearPublicationMode();
             } else {
               clearTeachingMode();
             }
-            requestAnimationFrame(function() { window.scrollTo(0, 0); });
           }
+          requestAnimationFrame(function() { window.scrollTo(0, 0); });
+          clearHashFromUrl();
         });
       }
       if (publicationLink) {
@@ -1498,22 +1553,25 @@
             body.classList.add('publication-mode');
             window.scrollTo(0, 0);
             fadeInCards('#publicationCards .pub-card');
+            clearHashFromUrl();
             return;
           }
           window.scrollTo(0, 0);
           setPublicationMode();
+          clearHashFromUrl();
         });
       }
       function goHome(e) {
+        e.preventDefault();
         if (body.classList.contains('teaching-mode') || body.classList.contains('publication-mode')) {
-          e.preventDefault();
           if (body.classList.contains('publication-mode')) {
             clearPublicationMode();
           } else {
             clearTeachingMode();
           }
-          requestAnimationFrame(function() { window.scrollTo(0, 0); });
         }
+        requestAnimationFrame(function() { window.scrollTo(0, 0); });
+        clearHashFromUrl();
       }
       if (brandLink) brandLink.addEventListener('click', goHome);
       if (navLogo) navLogo.addEventListener('click', goHome);
