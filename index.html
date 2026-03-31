@@ -209,6 +209,22 @@
       body.publication-mode #home #publications .pub-card {
         padding: 0.65rem 0.65rem 0.525rem 0.65rem !important;
       }
+      body.teaching-mode #teachingCards .pub-card-main {
+        grid-template-columns: 1fr !important;
+        min-height: 0 !important;
+        gap: 0.55rem;
+      }
+      body.teaching-mode #teachingCards .pub-teaser {
+        width: 100% !important;
+        height: auto !important;
+        aspect-ratio: 16 / 9;
+      }
+      body.teaching-mode #teachingCards .pub-copy {
+        width: 100%;
+      }
+      body.teaching-mode #teachingCards .pub-card {
+        padding: 0.65rem 0.65rem 0.525rem 0.65rem !important;
+      }
       .pub-links .pub-link-button.js-open-bibtex {
         display: none;
       }
@@ -1649,8 +1665,8 @@
   <footer id="contact" class="mt-0 border-t border-[#b8c4dc] dark:border-[#3d3d3d]">
     <div class="max-w-6xl mx-auto px-4 py-5 grid md:grid-cols-3 gap-8">
     </div>
-    <div class="flex flex-col items-center justify-center pb-8">
-      <div class="text-lg font-medium text-neutral-600 dark:text-neutral-100 flex items-center gap-2">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col items-end justify-center pb-8">
+      <div class="text-lg font-medium text-neutral-600 dark:text-neutral-100 flex items-center gap-2 text-right">
         <span>© <span id="year"></span> SNU Reality Lab.</span>
         <span id="themeToggle" class="ml-2 cursor-pointer select-none underline hover:text-amber-600 dark:hover:text-amber-400 transition items-center gap-2 h-[1.7em] align-middle">
           <i data-lucide="moon" class="align-middle"></i>
