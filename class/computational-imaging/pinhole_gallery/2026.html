@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Computational Imaging - Pinhole Gallery 2026</title>
+  <style>
+    :root {
+      --accent: #003380;
+      --border: #d6deec;
+      --muted: #4b5563;
+      --bg-soft: #f8fafc;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      min-width: 0;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Avenir", "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: #000000;
+      background: #ffffff;
+      line-height: 1.55;
+      width: 100vw;
+      max-width: 100vw;
+      min-width: 0;
+      /* Prevent horizontal scroll on mobile */
+      overflow-x: hidden;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover,
+    a:focus {
+      text-decoration: underline;
+    }
+
+    .page {
+      width: 50%;
+      margin: 0 auto;
+      padding: 2rem 0 3rem;
+    }
+
+    @media (max-width: 700px) {
+      html, body {
+        width: 100%;
+        min-width: 0;
+      }
+      .page {
+        width: 100% !important;
+        max-width: 100vw !important;
+        margin-left: 0;
+        margin-right: 0;
+        /* Add horizontal padding for mobile for nice appearance */
+        padding-left: 1rem;
+        padding-right: 1rem;
+        padding-top: 2rem;
+        padding-bottom: 3rem;
+      }
+    }
+
+    header {
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.8rem, 2.8vw, 2.6rem);
+      line-height: 1.2;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      margin-top: 0.45rem;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .note {
+      margin: 0.8rem 0 0;
+      padding: 0.7rem 0.9rem;
+      background: var(--bg-soft);
+      border: 1px solid var(--border);
+      border-radius: 0.4rem;
+      font-size: 0.95rem;
+      color: #334155;
+    }
+
+    .year-section {
+      margin-top: 1.5rem;
+    }
+
+    h2 {
+      margin: 0 0 0.8rem;
+      font-size: 1.4rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      justify-items: center;
+      margin-top: 1rem;
+      width: 100%;
+    }
+
+    .team-card {
+      width: 75%;
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      overflow: hidden;
+      background: #ffffff;
+      padding: 0.7rem;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      max-width: 100%;
+    }
+
+    /* Mobile: full width team cards and gallery */
+    @media (max-width: 700px) {
+      .gallery {
+        width: 100%;
+        grid-template-columns: 1fr;
+        justify-items: stretch;
+        /* Add horizontal gallery padding on mobile if desired, can be zero if cards already padded */
+        padding-left: 0;
+        padding-right: 0;
+      }
+      .team-card {
+        width: 100% !important;
+        max-width: 100vw !important;
+        min-width: 0;
+        margin-left: 0;
+        margin-right: 0;
+        /* Add horizontal padding inside each card on mobile */
+        box-sizing: border-box;
+        padding-left: 0.7rem;
+        padding-right: 0.7rem;
+      }
+    }
+
+    .team-photo {
+      width: 100%;
+      height: auto;
+      display: block;
+      background: #eef2f7;
+      border-radius: 0.4rem;
+    }
+    .team-media-stack {
+      display: grid;
+      gap: 0.6rem;
+    }
+
+    .team-meta {
+      order: -1;
+      padding: 0.2rem 0.2rem 0.7rem;
+    }
+
+    .team-label {
+      margin: 0;
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+
+    .team-name {
+      margin: 0.15rem 0 0;
+      font-size: 1.33rem;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+
+    .footer-links {
+      margin-top: 2.25rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <h1>Gallery of Notable Pinhole Photographs</h1>
+      <p class="subtitle">
+        4190.762 Topics in Computer Graphics: Computational Imaging - Seoul National University
+      </p>
+      <!-- <p class="note">
+        Template guide: duplicate one <code>article.team-card</code> block per team, then replace
+        image path and team names. Keep image files in this folder or use absolute URLs.
+      </p> -->
+    </header>
+
+    <section class="year-section">
+      <h2>Spring 2026</h2>
+      <p class="team-label" style="margin-top: 0.2rem;">
+        Instructors:&nbsp;
+        <a href="https://choisuyeon.github.io/" target="_blank" rel="noopener">Suyeon Choi</a>
+        &middot;
+        <a href="" target="_blank" rel="noopener">Uihwan Jeong (TA)</a>
+      </p>
+      <div class="gallery">
+        <article class="team-card">
+          <img class="team-photo" src="./2026/jongho.png" alt="Pinhole photo by Jongho Kim">
+          <div class="team-meta">
+            <p class="team-label">Team</p>
+            <p class="team-name">Jongho Kim</p>
+          </div>
+        </article>
+
+        <article class="team-card">
+          <img class="team-photo" src="./2026/yonghun.png" alt="Pinhole photo by Yonghun Choi">
+          <div class="team-meta">
+            <p class="team-label">Team</p>
+            <p class="team-name">Yonghun Choi</p>
+          </div>
+        </article>
+
+        <article class="team-card">
+          <img class="team-photo" src="./2026/sukhun_seungho.png" alt="Pinhole photo by Sukhun Yang, Seungho Lee">
+          <div class="team-meta">
+            <p class="team-label">Team</p>
+            <p class="team-name">Sukhun Yang, Seungho Lee</p>
+          </div>
+        </article>
+
+        <article class="team-card">
+          <div class="team-media-stack">
+            <video class="team-photo" controls preload="metadata" playsinline>
+              <source src="./2026/dongheon_1.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+            <video class="team-photo" controls preload="metadata" playsinline>
+              <source src="./2026/dongheon_2.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div class="team-meta">
+            <p class="team-label">Team</p>
+            <p class="team-name">Dongheon Yang</p>
+          </div>
+        </article>
+        
+      </div>
+    </section>
+
+    <p class="footer-links">
+      Back to course website:
+      <a href="../index.html">Computational Imaging (Spring 2026)</a>
+    </p>
+  </main>
+</body>
+</html>
