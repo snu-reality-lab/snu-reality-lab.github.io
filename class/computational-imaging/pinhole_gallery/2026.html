@@ -10,6 +10,8 @@
       --border: #d6deec;
       --muted: #4b5563;
       --bg-soft: #f8fafc;
+      --page-fluid-width: 50;
+      --card-fluid-width: 75;
     }
 
     * {
@@ -45,28 +47,11 @@
       text-decoration: underline;
     }
 
+    /* SMOOTH RESPONSIVE WIDTHS & PADDINGS FOR .page */
     .page {
-      width: 50%;
+      width: calc(var(--page-fluid-width) * 1%);
       margin: 0 auto;
-      padding: 2rem 0 3rem;
-    }
-
-    @media (max-width: 700px) {
-      html, body {
-        width: 100%;
-        min-width: 0;
-      }
-      .page {
-        width: 100% !important;
-        max-width: 100vw !important;
-        margin-left: 0;
-        margin-right: 0;
-        /* Add horizontal padding for mobile for nice appearance */
-        padding-left: 1rem;
-        padding-right: 1rem;
-        padding-top: 2rem;
-        padding-bottom: 3rem;
-      }
+      padding: 2rem clamp(0.75rem, 2.5vw, 1.25rem) 3rem;
     }
 
     header {
@@ -109,6 +94,7 @@
       line-height: 1.2;
     }
 
+    /* Make gallery/grid width and team-card width both smoothly scale down */
     .gallery {
       display: grid;
       grid-template-columns: 1fr;
@@ -116,10 +102,13 @@
       justify-items: center;
       margin-top: 1rem;
       width: 100%;
+      /* Prevent overflow at all widths */
+      max-width: 100%;
+      box-sizing: border-box;
     }
 
     .team-card {
-      width: 75%;
+      width: calc(var(--card-fluid-width) * 1%);
       border: 1px solid var(--border);
       border-radius: 0.5rem;
       overflow: hidden;
@@ -129,30 +118,10 @@
       flex-direction: column;
       box-sizing: border-box;
       max-width: 100%;
+      min-width: 0;
     }
 
-    /* Mobile: full width team cards and gallery */
-    @media (max-width: 700px) {
-      .gallery {
-        width: 100%;
-        grid-template-columns: 1fr;
-        justify-items: stretch;
-        /* Add horizontal gallery padding on mobile if desired, can be zero if cards already padded */
-        padding-left: 0;
-        padding-right: 0;
-      }
-      .team-card {
-        width: 100% !important;
-        max-width: 100vw !important;
-        min-width: 0;
-        margin-left: 0;
-        margin-right: 0;
-        /* Add horizontal padding inside each card on mobile */
-        box-sizing: border-box;
-        padding-left: 0.7rem;
-        padding-right: 0.7rem;
-      }
-    }
+    /* End smooth scaling for card */
 
     .team-photo {
       width: 100%;
@@ -264,5 +233,25 @@
       <a href="../index.html">Computational Imaging (Spring 2026)</a>
     </p>
   </main>
+  <script>
+    (function() {
+      function sigmoid(x) {
+        return 1 / (1 + Math.exp(-x));
+      }
+
+      function updateFluidWidths() {
+        var w = window.innerWidth || document.documentElement.clientWidth || 1200;
+        // Smoothly approaches 1 as the viewport gets narrower; no hard threshold.
+        var s = sigmoid((980 - w) / 170);
+        var pageWidth = 50 + (99.2 - 50) * s;
+        var cardWidth = 75 + (99 - 75) * s;
+        document.documentElement.style.setProperty('--page-fluid-width', pageWidth.toFixed(3));
+        document.documentElement.style.setProperty('--card-fluid-width', cardWidth.toFixed(3));
+      }
+
+      updateFluidWidths();
+      window.addEventListener('resize', updateFluidWidths, { passive: true });
+    })();
+  </script>
 </body>
 </html>
